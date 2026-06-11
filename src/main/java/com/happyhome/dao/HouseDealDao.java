@@ -17,10 +17,7 @@ public class HouseDealDao {
     }
 
     public List<HouseDeal> search(HouseSearchCondition condition) {
-        if (condition == null || !condition.hasSearchCondition()) {
-            return Collections.emptyList();
-        }
-        return mapper.search(condition);
+        return mapper.search(condition == null ? new HouseSearchCondition() : condition);
     }
 
     public Optional<HouseDeal> findByNo(int no) {

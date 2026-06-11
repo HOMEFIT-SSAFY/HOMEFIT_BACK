@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS houseinfos (
     apt_nm VARCHAR(120),
     build_year INT,
     latitude VARCHAR(30),
-    longitude VARCHAR(30)
+    longitude VARCHAR(30),
+    FOREIGN KEY (dong_code) REFERENCES dongcodes (dong_code)
 );
 
 CREATE TABLE IF NOT EXISTS housedeals (
@@ -39,14 +40,17 @@ CREATE TABLE IF NOT EXISTS housedeals (
     deal_month INT,
     deal_day INT,
     exclu_use_ar DECIMAL(10, 2),
-    deal_amount VARCHAR(40)
+    deal_amount VARCHAR(40),
+    FOREIGN KEY (apt_seq) REFERENCES houseinfos (apt_seq)
 );
 
 CREATE TABLE IF NOT EXISTS favorite_deals (
     user_id VARCHAR(50) NOT NULL,
     deal_no INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, deal_no)
+    PRIMARY KEY (user_id, deal_no),
+    FOREIGN KEY (user_id) REFERENCES members (user_id),
+    FOREIGN KEY (deal_no) REFERENCES housedeals (no)
 );
 
 CREATE TABLE IF NOT EXISTS notices (
@@ -58,7 +62,8 @@ CREATE TABLE IF NOT EXISTS notices (
     pinned BOOLEAN DEFAULT FALSE,
     visible BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (writer) REFERENCES members (user_id)
 );
 
 CREATE TABLE IF NOT EXISTS transfers (
@@ -80,7 +85,8 @@ CREATE TABLE IF NOT EXISTS transfers (
     contact_phone VARCHAR(50),
     view_count INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (writer_id) REFERENCES members (user_id)
 );
 
 CREATE TABLE IF NOT EXISTS transfer_images (
@@ -89,9 +95,7 @@ CREATE TABLE IF NOT EXISTS transfer_images (
     image_url VARCHAR(1000) NOT NULL,
     sort_order INT NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_transfer_images_transfer
-        FOREIGN KEY (transfer_id) REFERENCES transfers(transfer_id)
-        ON DELETE CASCADE
+    FOREIGN KEY (transfer_id) REFERENCES transfers (transfer_id)
 );
 
 CREATE TABLE IF NOT EXISTS rental_notice_cache (
@@ -121,9 +125,7 @@ CREATE TABLE IF NOT EXISTS lh_notice_details (
     contact VARCHAR(100),
     raw_json TEXT,
     cached_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_lh_notice_details_notice
-        FOREIGN KEY (notice_id) REFERENCES rental_notice_cache(notice_id)
-        ON DELETE CASCADE
+    FOREIGN KEY (notice_id) REFERENCES rental_notice_cache (notice_id)
 );
 
 CREATE TABLE IF NOT EXISTS lh_notice_supplies (
@@ -137,9 +139,7 @@ CREATE TABLE IF NOT EXISTS lh_notice_supplies (
     household_count VARCHAR(80),
     raw_json TEXT,
     cached_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_lh_notice_supplies_notice
-        FOREIGN KEY (notice_id) REFERENCES rental_notice_cache(notice_id)
-        ON DELETE CASCADE
+    FOREIGN KEY (notice_id) REFERENCES rental_notice_cache (notice_id)
 );
 
 CREATE TABLE IF NOT EXISTS openapi_sync_logs (

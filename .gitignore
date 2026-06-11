@@ -31,4 +31,6 @@ out/
 ### VS Code ###
 .vscode/
 .gstack/
-.gstack/
+.env
+.env.*
+!.env.example
