@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.happyhome.dao.FavoriteDealMapper">
+<mapper namespace="com.happyhome.favorite.dao.FavoriteDealMapper">
     <select id="count" resultType="int">
         SELECT COUNT(*)
         FROM favorite_deals

@@ -12,9 +12,9 @@
     </parent>
 
     <groupId>com.happyhome</groupId>
-    <artifactId>temp</artifactId>
+    <artifactId>pjt_back</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>HappyHomeOpenApi</name>
+    <name>pjt_back</name>
     <description>HappyHome Open API housing analysis application</description>
 
     <properties>

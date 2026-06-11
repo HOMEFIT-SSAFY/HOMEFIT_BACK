@@ -1,10 +1,10 @@
 package com.happyhome.openapi;
 
-import com.happyhome.dto.CommercialPlace;
-import com.happyhome.dto.RentalDetail;
-import com.happyhome.dto.RentalNotice;
-import com.happyhome.dto.RentalSupply;
-import com.happyhome.dto.TrafficEvent;
+import com.happyhome.commercial.dto.CommercialPlace;
+import com.happyhome.rental.dto.RentalDetail;
+import com.happyhome.rental.dto.RentalNotice;
+import com.happyhome.rental.dto.RentalSupply;
+import com.happyhome.traffic.dto.TrafficEvent;
 import java.util.List;
 
 public final class SampleData {

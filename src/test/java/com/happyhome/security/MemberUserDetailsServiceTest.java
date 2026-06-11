@@ -3,9 +3,9 @@ package com.happyhome.security;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.happyhome.dao.MemberDao;
-import com.happyhome.dto.MemberDto;
-import com.happyhome.service.MemberService;
+import com.happyhome.member.dao.MemberDao;
+import com.happyhome.member.dto.MemberDto;
+import com.happyhome.member.service.MemberService;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.UserDetails;

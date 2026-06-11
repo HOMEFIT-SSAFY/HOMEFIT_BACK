@@ -1,7 +1,7 @@
 package com.happyhome.security;
 
-import com.happyhome.dto.MemberDto;
-import com.happyhome.service.MemberService;
+import com.happyhome.member.dto.MemberDto;
+import com.happyhome.member.service.MemberService;
 import java.util.List;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

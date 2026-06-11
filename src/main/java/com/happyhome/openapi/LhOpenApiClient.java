@@ -2,10 +2,10 @@ package com.happyhome.openapi;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.happyhome.config.OpenApiProperties;
-import com.happyhome.dto.RentalDetail;
-import com.happyhome.dto.RentalNotice;
-import com.happyhome.dto.RentalSearchCondition;
-import com.happyhome.dto.RentalSupply;
+import com.happyhome.rental.dto.RentalDetail;
+import com.happyhome.rental.dto.RentalNotice;
+import com.happyhome.rental.dto.RentalSearchCondition;
+import com.happyhome.rental.dto.RentalSupply;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;

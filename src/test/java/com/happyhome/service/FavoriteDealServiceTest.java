@@ -2,9 +2,10 @@ package com.happyhome.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.happyhome.dao.FavoriteDealDao;
-import com.happyhome.dao.HouseDealDao;
-import com.happyhome.dto.HouseDeal;
+import com.happyhome.favorite.dao.FavoriteDealDao;
+import com.happyhome.favorite.service.FavoriteDealService;
+import com.happyhome.house.dao.HouseDealDao;
+import com.happyhome.house.dto.HouseDeal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

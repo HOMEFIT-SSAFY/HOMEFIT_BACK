@@ -2,10 +2,10 @@ package com.happyhome.analysis;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.happyhome.dto.AnalysisScore;
-import com.happyhome.dto.CommercialSummary;
-import com.happyhome.dto.TrafficRiskSummary;
-import com.happyhome.service.AnalysisScoreService;
+import com.happyhome.analysis.dto.AnalysisScore;
+import com.happyhome.commercial.dto.CommercialSummary;
+import com.happyhome.traffic.dto.TrafficRiskSummary;
+import com.happyhome.analysis.service.AnalysisScoreService;
 import org.junit.jupiter.api.Test;
 
 class AnalysisScoreServiceTest {

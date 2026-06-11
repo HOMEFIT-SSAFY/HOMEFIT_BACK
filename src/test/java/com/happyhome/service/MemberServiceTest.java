@@ -2,8 +2,9 @@ package com.happyhome.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.happyhome.dao.MemberDao;
-import com.happyhome.dto.MemberDto;
+import com.happyhome.member.dao.MemberDao;
+import com.happyhome.member.dto.MemberDto;
+import com.happyhome.member.service.MemberService;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

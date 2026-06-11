@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.happyhome.batch.mapper.NoticeLHBatchMapper">
+
+    <insert id="upsertDetail">
+        INSERT INTO lh_notice_details (
+            notice_id,
+            contract_address,
+            contract_detail_address,
+            apply_start_date,
+            apply_end_date,
+            contact,
+            raw_json,
+            cached_at
+        ) VALUES (
+            #{noticeId},
+            #{contractAddress},
+            #{contractDetailAddress},
+            #{applyStartDate},
+            #{applyEndDate},
+            #{contact},
+            NULL,
+            CURRENT_TIMESTAMP
+        )
+        ON DUPLICATE KEY UPDATE
+            contract_address = VALUES(contract_address),
+            contract_detail_address = VALUES(contract_detail_address),
+            apply_start_date = VALUES(apply_start_date),
+            apply_end_date = VALUES(apply_end_date),
+            contact = VALUES(contact),
+            raw_json = VALUES(raw_json),
+            cached_at = CURRENT_TIMESTAMP
+    </insert>
+
+    <delete id="deleteSuppliesByNoticeId">
+        DELETE FROM lh_notice_supplies
+        WHERE notice_id = #{noticeId}
+    </delete>
+
+    <insert id="insertSupply">
+        INSERT INTO lh_notice_supplies (
+            notice_id,
+            usage,
+            address,
+            area,
+            expected_amount,
+            house_type,
+            household_count,
+            raw_json,
+            cached_at
+        ) VALUES (
+            #{noticeId},
+            #{usage},
+            #{address},
+            #{area},
+            #{expectedAmount},
+            #{houseType},
+            #{householdCount},
+            NULL,
+            CURRENT_TIMESTAMP
+        )
+    </insert>
+
+    <insert id="insertLog">
+        INSERT INTO openapi_sync_logs (
+            job_name,
+            api_name,
+            status,
+            started_at,
+            finished_at,
+            fetched_count,
+            saved_count,
+            error_message
+        ) VALUES (
+            #{jobName},
+            #{apiName},
+            #{status},
+            #{startedAt},
+            #{finishedAt},
+            #{fetchedCount},
+            #{savedCount},
+            #{errorMessage}
+        )
+    </insert>
+
+</mapper>

@@ -1,6 +1,6 @@
 package com.happyhome.security;
 
-import com.happyhome.service.MemberService;
+import com.happyhome.member.service.MemberService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

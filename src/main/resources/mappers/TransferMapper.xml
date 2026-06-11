@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.happyhome.dao.TransferMapper">
-    <resultMap id="transferMap" type="com.happyhome.dto.TransferDto">
+<mapper namespace="com.happyhome.transfer.dao.TransferMapper">
+    <resultMap id="transferMap" type="com.happyhome.transfer.dto.TransferDto">
         <id column="transfer_id" property="transferId"/>
         <result column="writer_id" property="writerId"/>
         <result column="title" property="title"/>

@@ -2,7 +2,7 @@ package com.happyhome.openapi;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.happyhome.config.OpenApiProperties;
-import com.happyhome.dto.CommercialPlace;
+import com.happyhome.commercial.dto.CommercialPlace;
 import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Component;

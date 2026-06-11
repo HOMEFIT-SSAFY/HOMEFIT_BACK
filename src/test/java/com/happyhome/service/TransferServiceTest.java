@@ -2,9 +2,10 @@ package com.happyhome.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.happyhome.dto.TransferDto;
-import com.happyhome.dto.TransferRequest;
-import com.happyhome.dto.TransferSearchCondition;
+import com.happyhome.transfer.dto.TransferDto;
+import com.happyhome.transfer.dto.TransferRequest;
+import com.happyhome.transfer.dto.TransferSearchCondition;
+import com.happyhome.transfer.service.TransferService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;

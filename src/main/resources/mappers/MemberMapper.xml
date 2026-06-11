@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.happyhome.dao.MemberMapper">
-    <resultMap id="memberMap" type="com.happyhome.dto.MemberDto">
+<mapper namespace="com.happyhome.member.dao.MemberMapper">
+    <resultMap id="memberMap" type="com.happyhome.member.dto.MemberDto">
         <id column="user_id" property="userId"/>
         <result column="password" property="password"/>
         <result column="name" property="name"/>
