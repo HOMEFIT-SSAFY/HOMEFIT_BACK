@@ -8,6 +8,7 @@ public class OpenApiProperties {
     private final Data data = new Data();
     private final Its its = new Its();
     private final Kakao kakao = new Kakao();
+    private final Bus bus = new Bus();
     private final Lh lh = new Lh();
     private final Commercial commercial = new Commercial();
 
@@ -21,6 +22,10 @@ public class OpenApiProperties {
 
     public Kakao getKakao() {
         return kakao;
+    }
+
+    public Bus getBus() {
+        return bus;
     }
 
     public Lh getLh() {
@@ -66,6 +71,7 @@ public class OpenApiProperties {
 
     public static class Kakao {
         private String javascriptKey = "";
+        private String restKey = "";
 
         public String getJavascriptKey() {
             return javascriptKey;
@@ -73,6 +79,35 @@ public class OpenApiProperties {
 
         public void setJavascriptKey(String javascriptKey) {
             this.javascriptKey = javascriptKey;
+        }
+
+        public String getRestKey() {
+            return restKey;
+        }
+
+        public void setRestKey(String restKey) {
+            this.restKey = restKey;
+        }
+    }
+
+    public static class Bus {
+        private String serviceKey = "";
+        private String baseUrl = "";
+
+        public String getServiceKey() {
+            return serviceKey;
+        }
+
+        public void setServiceKey(String serviceKey) {
+            this.serviceKey = serviceKey;
+        }
+
+        public String getBaseUrl() {
+            return baseUrl;
+        }
+
+        public void setBaseUrl(String baseUrl) {
+            this.baseUrl = baseUrl;
         }
     }
 
@@ -127,4 +162,3 @@ public class OpenApiProperties {
         }
     }
 }
-

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.happyhome.transport.dao.BusStopMapper">
+    <resultMap id="busStopMap" type="com.happyhome.transport.dto.BusStop">
+        <constructor>
+            <arg column="node_id" javaType="string"/>
+            <arg column="node_name" javaType="string"/>
+            <arg column="node_no" javaType="string"/>
+            <arg column="city_code" javaType="string"/>
+            <arg column="latitude" javaType="double"/>
+            <arg column="longitude" javaType="double"/>
+        </constructor>
+    </resultMap>
+
+    <insert id="upsertCityCode">
+        INSERT INTO bus_city_codes (
+            city_code, city_name, synced_at
+        ) VALUES (
+            #{cityCode}, #{cityName}, CURRENT_TIMESTAMP
+        )
+        ON DUPLICATE KEY UPDATE
+            city_name = VALUES(city_name),
+            synced_at = CURRENT_TIMESTAMP
+    </insert>
+
+    <insert id="upsertBusStop">
+        INSERT INTO bus_stops (
+            node_id, node_name, node_no, city_code, latitude, longitude, synced_at
+        ) VALUES (
+            #{nodeId}, #{nodeName}, #{nodeNo}, #{cityCode}, #{latitude}, #{longitude}, CURRENT_TIMESTAMP
+        )
+        ON DUPLICATE KEY UPDATE
+            node_name = VALUES(node_name),
+            node_no = VALUES(node_no),
+            city_code = VALUES(city_code),
+            latitude = VALUES(latitude),
+            longitude = VALUES(longitude),
+            synced_at = CURRENT_TIMESTAMP
+    </insert>
+
+    <select id="countBusStops" resultType="int">
+        SELECT COUNT(*) FROM bus_stops
+    </select>
+
+    <select id="findNearby" resultMap="busStopMap">
+        SELECT *
+        FROM (
+            SELECT
+                node_id,
+                node_name,
+                node_no,
+                city_code,
+                latitude,
+                longitude,
+                (
+                    6371000 * ACOS(
+                        COS(RADIANS(#{latitude}))
+                        * COS(RADIANS(latitude))
+                        * COS(RADIANS(longitude) - RADIANS(#{longitude}))
+                        + SIN(RADIANS(#{latitude}))
+                        * SIN(RADIANS(latitude))
+                    )
+                ) AS distance_m
+            FROM bus_stops
+            WHERE latitude BETWEEN #{latitude} - (#{radiusMeters} / 111320.0)
+                AND #{latitude} + (#{radiusMeters} / 111320.0)
+              AND longitude BETWEEN #{longitude} - (#{radiusMeters} / (111320.0 * COS(RADIANS(#{latitude}))))
+                AND #{longitude} + (#{radiusMeters} / (111320.0 * COS(RADIANS(#{latitude}))))
+        ) nearby
+        WHERE distance_m &lt;= #{radiusMeters}
+        ORDER BY distance_m ASC
+        LIMIT #{limit}
+    </select>
+</mapper>

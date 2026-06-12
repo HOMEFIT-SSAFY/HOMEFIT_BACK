@@ -1,29 +1,29 @@
 [INFO] Scanning for projects...
 [INFO] 
-[INFO] -------------------------< com.happyhome:temp >-------------------------
-[INFO] Building HappyHomeOpenApi 0.0.1-SNAPSHOT
+[INFO] -----------------------< com.happyhome:pjt_back >-----------------------
+[INFO] Building pjt_back 0.0.1-SNAPSHOT
 [INFO]   from pom.xml
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
-[INFO] >>> spring-boot:4.0.6:run (default-cli) > test-compile @ temp >>>
+[INFO] >>> spring-boot:4.0.6:run (default-cli) > test-compile @ pjt_back >>>
 [INFO] 
-[INFO] --- resources:3.3.1:resources (default-resources) @ temp ---
+[INFO] --- resources:3.3.1:resources (default-resources) @ pjt_back ---
 [INFO] Copying 1 resource from src\main\resources to target\classes
-[INFO] Copying 24 resources from src\main\resources to target\classes
+[INFO] Copying 26 resources from src\main\resources to target\classes
 [INFO] 
-[INFO] --- compiler:3.14.1:compile (default-compile) @ temp ---
+[INFO] --- compiler:3.14.1:compile (default-compile) @ pjt_back ---
 [INFO] Nothing to compile - all classes are up to date.
 [INFO] 
-[INFO] --- resources:3.3.1:testResources (default-testResources) @ temp ---
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ pjt_back ---
 [INFO] skip non existing resourceDirectory C:\SSAFY\workspace\包烹\PJT_BACK\src\test\resources
 [INFO] 
-[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ temp ---
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ pjt_back ---
 [INFO] Nothing to compile - all classes are up to date.
 [INFO] 
-[INFO] <<< spring-boot:4.0.6:run (default-cli) < test-compile @ temp <<<
+[INFO] <<< spring-boot:4.0.6:run (default-cli) < test-compile @ pjt_back <<<
 [INFO] 
 [INFO] 
-[INFO] --- spring-boot:4.0.6:run (default-cli) @ temp ---
+[INFO] --- spring-boot:4.0.6:run (default-cli) @ pjt_back ---
 [INFO] Attaching agents: []
 
   .   ____          _            __ _ _
@@ -35,154 +35,25 @@
 
  :: Spring Boot ::                (v4.0.6)
 
-2026-06-10T15:35:02.345+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.happyhome.TempApplication            : Starting TempApplication using Java 17.0.17 with PID 24760 (C:\SSAFY\workspace\包烹\PJT_BACK\target\classes started by user in C:\SSAFY\workspace\包烹\PJT_BACK)
-2026-06-10T15:35:02.350+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.happyhome.TempApplication            : No active profile set, falling back to 1 default profile: "default"
-2026-06-10T15:35:02.407+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2026-06-10T15:35:02.408+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2026-06-10T15:35:04.194+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
-2026-06-10T15:35:04.208+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-06-10T15:35:04.208+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
-2026-06-10T15:35:04.272+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1863 ms
-2026-06-10T15:35:04.718+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-06-10T15:35:05.231+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@41dd297d
-2026-06-10T15:35:05.237+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-06-10T15:35:06.621+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name memberUserDetailsService
-2026-06-10T15:35:07.261+09:00  WARN 24760 --- [HappyHomeOpenApi] [  restartedMain] o.s.w.s.resource.ResourceHandlerUtils    : Appended trailing slash to static resource location: file:///C:/SSAFY/workspace/包烹/PJT_BACK/uploads/
-2026-06-10T15:35:08.072+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
-2026-06-10T15:35:08.091+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.happyhome.TempApplication            : Started TempApplication in 6.165 seconds (process running for 6.656)
-2026-06-10T15:35:08.098+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] o.s.b.b.a.JobLauncherApplicationRunner   : Running default command line with: []
-2026-06-10T15:35:08.101+09:00  WARN 24760 --- [HappyHomeOpenApi] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
-2026-06-10T15:35:08.102+09:00  WARN 24760 --- [HappyHomeOpenApi] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
-2026-06-10T15:35:08.401+09:00  INFO 24760 --- [HappyHomeOpenApi] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-06-10T15:35:08.402+09:00  INFO 24760 --- [HappyHomeOpenApi] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-06-10T15:35:08.405+09:00  INFO 24760 --- [HappyHomeOpenApi] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
-2026-06-10T17:44:29.226+09:00  INFO 24760 --- [HappyHomeOpenApi] [   File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
-2026-06-10T17:44:29.846+09:00  INFO 24760 --- [HappyHomeOpenApi] [       Thread-1] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
-2026-06-10T17:44:32.685+09:00  INFO 24760 --- [HappyHomeOpenApi] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
-2026-06-10T17:44:32.919+09:00  INFO 24760 --- [HappyHomeOpenApi] [       Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2026-06-10T17:44:32.979+09:00  INFO 24760 --- [HappyHomeOpenApi] [       Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
-
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
-
- :: Spring Boot ::                (v4.0.6)
-
-2026-06-10T17:44:34.406+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.happyhome.TempApplication            : Starting TempApplication using Java 17.0.17 with PID 24760 (C:\SSAFY\workspace\包烹\PJT_BACK\target\classes started by user in C:\SSAFY\workspace\包烹\PJT_BACK)
-2026-06-10T17:44:34.409+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.happyhome.TempApplication            : No active profile set, falling back to 1 default profile: "default"
-2026-06-10T17:44:38.311+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
-2026-06-10T17:44:38.319+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-06-10T17:44:38.323+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
-2026-06-10T17:44:38.757+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 4310 ms
-2026-06-10T17:44:39.111+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
-2026-06-10T17:44:39.186+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@60fb0f56
-2026-06-10T17:44:39.188+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
-2026-06-10T17:44:39.936+09:00  WARN 24760 --- [HappyHomeOpenApi] [  restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'analysisController' defined in file [C:\SSAFY\workspace\包烹\PJT_BACK\target\classes\com\happyhome\controller\AnalysisController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'analysisService' defined in file [C:\SSAFY\workspace\包烹\PJT_BACK\target\classes\com\happyhome\service\AnalysisService.class]: Unsatisfied dependency expressed through constructor parameter 4: Error creating bean with name 'analysisSnapshotMapper' defined in file [C:\SSAFY\workspace\包烹\PJT_BACK\target\classes\com\happyhome\dao\AnalysisSnapshotMapper.class]: Cannot resolve reference to bean 'sqlSessionTemplate' while setting bean property 'sqlSessionTemplate'
-2026-06-10T17:44:39.938+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
-2026-06-10T17:44:40.012+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
-2026-06-10T17:44:40.016+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-2026-06-10T17:44:40.042+09:00  INFO 24760 --- [HappyHomeOpenApi] [  restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
-
-Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
-2026-06-10T17:44:40.156+09:00 ERROR 24760 --- [HappyHomeOpenApi] [  restartedMain] o.s.boot.SpringApplication               : Application run failed
-
-org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'analysisController' defined in file [C:\SSAFY\workspace\包烹\PJT_BACK\target\classes\com\happyhome\controller\AnalysisController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'analysisService' defined in file [C:\SSAFY\workspace\包烹\PJT_BACK\target\classes\com\happyhome\service\AnalysisService.class]: Unsatisfied dependency expressed through constructor parameter 4: Error creating bean with name 'analysisSnapshotMapper' defined in file [C:\SSAFY\workspace\包烹\PJT_BACK\target\classes\com\happyhome\dao\AnalysisSnapshotMapper.class]: Cannot resolve reference to bean 'sqlSessionTemplate' while setting bean property 'sqlSessionTemplate'
-	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1382) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1221) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1218) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1184) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1121) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:994) ~[spring-context-7.0.7.jar:7.0.7]
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.7.jar:7.0.7]
-	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.6.jar:4.0.6]
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.6.jar:4.0.6]
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.6.jar:4.0.6]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.6.jar:4.0.6]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.6.jar:4.0.6]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.6.jar:4.0.6]
-	at com.happyhome.TempApplication.main(TempApplication.java:13) ~[classes/:na]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
-	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.6.jar:4.0.6]
-Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'analysisService' defined in file [C:\SSAFY\workspace\包烹\PJT_BACK\target\classes\com\happyhome\service\AnalysisService.class]: Unsatisfied dependency expressed through constructor parameter 4: Error creating bean with name 'analysisSnapshotMapper' defined in file [C:\SSAFY\workspace\包烹\PJT_BACK\target\classes\com\happyhome\dao\AnalysisSnapshotMapper.class]: Cannot resolve reference to bean 'sqlSessionTemplate' while setting bean property 'sqlSessionTemplate'
-	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1382) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1221) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:1225) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1704) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:912) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-7.0.7.jar:7.0.7]
-	... 26 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'analysisSnapshotMapper' defined in file [C:\SSAFY\workspace\包烹\PJT_BACK\target\classes\com\happyhome\dao\AnalysisSnapshotMapper.class]: Cannot resolve reference to bean 'sqlSessionTemplate' while setting bean property 'sqlSessionTemplate'
-	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1461) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:229) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1762) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:912) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-7.0.7.jar:7.0.7]
-	... 40 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSourceScriptDatabaseInitializer' defined in class path resource [org/springframework/boot/jdbc/autoconfigure/DataSourceInitializationAutoConfiguration.class]: Failed to execute SQL script statement #11 of file [C:\SSAFY\workspace\包烹\PJT_BACK\target\classes\schema.sql]: CREATE TABLE IF NOT EXISTS lh_notice_supplies ( supply_id BIGINT AUTO_INCREMENT PRIMARY KEY, notice_id VARCHAR(40) NOT NULL, usage VARCHAR(120), address VARCHAR(300), area VARCHAR(80), expected_amount VARCHAR(300), house_type VARCHAR(120), household_count VARCHAR(80), raw_json TEXT, cached_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, CONSTRAINT fk_lh_notice_supplies_notice FOREIGN KEY (notice_id) REFERENCES rental_notice_cache(notice_id) ON DELETE CASCADE )
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1817) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:309) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-7.0.7.jar:7.0.7]
-	... 54 common frames omitted
-Caused by: org.springframework.jdbc.datasource.init.ScriptStatementFailedException: Failed to execute SQL script statement #11 of file [C:\SSAFY\workspace\包烹\PJT_BACK\target\classes\schema.sql]: CREATE TABLE IF NOT EXISTS lh_notice_supplies ( supply_id BIGINT AUTO_INCREMENT PRIMARY KEY, notice_id VARCHAR(40) NOT NULL, usage VARCHAR(120), address VARCHAR(300), area VARCHAR(80), expected_amount VARCHAR(300), house_type VARCHAR(120), household_count VARCHAR(80), raw_json TEXT, cached_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, CONSTRAINT fk_lh_notice_supplies_notice FOREIGN KEY (notice_id) REFERENCES rental_notice_cache(notice_id) ON DELETE CASCADE )
-	at org.springframework.jdbc.datasource.init.ScriptUtils.executeSqlScript(ScriptUtils.java:293) ~[spring-jdbc-7.0.7.jar:7.0.7]
-	at org.springframework.jdbc.datasource.init.ResourceDatabasePopulator.populate(ResourceDatabasePopulator.java:254) ~[spring-jdbc-7.0.7.jar:7.0.7]
-	at org.springframework.jdbc.datasource.init.DatabasePopulatorUtils.execute(DatabasePopulatorUtils.java:54) ~[spring-jdbc-7.0.7.jar:7.0.7]
-	at org.springframework.boot.jdbc.init.DataSourceScriptDatabaseInitializer.runScripts(DataSourceScriptDatabaseInitializer.java:87) ~[spring-boot-jdbc-4.0.6.jar:4.0.6]
-	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.runScripts(AbstractScriptDatabaseInitializer.java:159) ~[spring-boot-sql-4.0.6.jar:4.0.6]
-	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.applyScripts(AbstractScriptDatabaseInitializer.java:120) ~[spring-boot-sql-4.0.6.jar:4.0.6]
-	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.applySchemaScripts(AbstractScriptDatabaseInitializer.java:109) ~[spring-boot-sql-4.0.6.jar:4.0.6]
-	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.initializeDatabase(AbstractScriptDatabaseInitializer.java:87) ~[spring-boot-sql-4.0.6.jar:4.0.6]
-	at org.springframework.boot.sql.init.AbstractScriptDatabaseInitializer.afterPropertiesSet(AbstractScriptDatabaseInitializer.java:77) ~[spring-boot-sql-4.0.6.jar:4.0.6]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864) ~[spring-beans-7.0.7.jar:7.0.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813) ~[spring-beans-7.0.7.jar:7.0.7]
-	... 63 common frames omitted
-Caused by: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'usage VARCHAR(120), address VARCHAR(300), area VARCHAR(80), expected_amount VARC' at line 1
-	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:112) ~[mysql-connector-j-9.7.0.jar:9.7.0]
-	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114) ~[mysql-connector-j-9.7.0.jar:9.7.0]
-	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:839) ~[mysql-connector-j-9.7.0.jar:9.7.0]
-	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:687) ~[mysql-connector-j-9.7.0.jar:9.7.0]
-	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
-	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
-	at org.springframework.jdbc.datasource.init.ScriptUtils.executeSqlScript(ScriptUtils.java:261) ~[spring-jdbc-7.0.7.jar:7.0.7]
-	... 73 common frames omitted
-
+2026-06-12T19:45:38.743+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Starting TempApplication using Java 17.0.17 with PID 16268 (C:\SSAFY\workspace\包烹\PJT_BACK\target\classes started by user in C:\SSAFY\workspace\包烹\PJT_BACK)
+2026-06-12T19:45:38.743+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-06-12T19:45:38.820+09:00  INFO 16268 --- [pjt_back] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-12T19:45:38.820+09:00  INFO 16268 --- [pjt_back] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-12T19:45:40.695+09:00  INFO 16268 --- [pjt_back] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-06-12T19:45:40.717+09:00  INFO 16268 --- [pjt_back] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-12T19:45:40.717+09:00  INFO 16268 --- [pjt_back] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-06-12T19:45:40.792+09:00  INFO 16268 --- [pjt_back] [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1971 ms
+2026-06-12T19:45:41.237+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-12T19:45:41.485+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1b84d7d7
+2026-06-12T19:45:41.490+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-12T19:45:42.426+09:00  INFO 16268 --- [pjt_back] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name memberUserDetailsService
+2026-06-12T19:45:42.718+09:00  WARN 16268 --- [pjt_back] [  restartedMain] o.s.w.s.resource.ResourceHandlerUtils    : Appended trailing slash to static resource location: file:///C:/SSAFY/workspace/包烹/PJT_BACK/uploads/
+2026-06-12T19:45:43.145+09:00  INFO 16268 --- [pjt_back] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-06-12T19:45:43.166+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Started TempApplication in 4.852 seconds (process running for 5.411)
+2026-06-12T19:45:43.170+09:00  INFO 16268 --- [pjt_back] [  restartedMain] o.s.b.b.a.JobLauncherApplicationRunner   : Running default command line with: []
+2026-06-12T19:45:43.170+09:00  WARN 16268 --- [pjt_back] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-06-12T19:45:43.170+09:00  WARN 16268 --- [pjt_back] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-06-12T19:45:45.791+09:00  INFO 16268 --- [pjt_back] [nio-8080-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-12T19:45:45.798+09:00  INFO 16268 --- [pjt_back] [nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-12T19:45:45.800+09:00  INFO 16268 --- [pjt_back] [nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-06-12T19:45:46.709+09:00  WARN 16268 --- [pjt_back] [nio-8080-exec-3] com.happyhome.ai.HappyHomeAiService      : HappyHome AI chat failed: 404: {"message":"[OpenAI 俊矾] Request failed with status code 404","statusCode":404}

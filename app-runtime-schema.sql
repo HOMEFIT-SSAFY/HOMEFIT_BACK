@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS lh_notice_details (
 CREATE TABLE IF NOT EXISTS lh_notice_supplies (
     supply_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     notice_id VARCHAR(40) NOT NULL,
-    usage VARCHAR(120),
+    `usage` VARCHAR(120),
     address VARCHAR(300),
     area VARCHAR(80),
     expected_amount VARCHAR(300),

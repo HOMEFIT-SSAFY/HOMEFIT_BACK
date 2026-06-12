@@ -43,7 +43,7 @@
     <insert id="insertSupply">
         INSERT INTO lh_notice_supplies (
             notice_id,
-            usage,
+            `usage`,
             address,
             area,
             expected_amount,

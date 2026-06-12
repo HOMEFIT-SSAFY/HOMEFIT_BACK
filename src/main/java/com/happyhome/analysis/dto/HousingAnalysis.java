@@ -13,10 +13,10 @@ public record HousingAnalysis(
         int radiusMeters,
         CommercialSummary commercialSummary,
         TrafficRiskSummary trafficRiskSummary,
+        TransitSummary transitSummary,
         AnalysisScore score,
         List<CommercialPlace> places,
         List<TrafficEvent> events,
         String source
 ) {
 }
-

@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS lh_notice_details (
 CREATE TABLE IF NOT EXISTS lh_notice_supplies (
     supply_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     notice_id VARCHAR(40) NOT NULL,
-    usage VARCHAR(120),
+    `usage` VARCHAR(120),
     address VARCHAR(300),
     area VARCHAR(80),
     expected_amount VARCHAR(300),
@@ -166,4 +166,25 @@ CREATE TABLE IF NOT EXISTS analysis_snapshot (
     risk_level VARCHAR(30) NOT NULL,
     source VARCHAR(20) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS bus_city_codes (
+    city_code VARCHAR(5) PRIMARY KEY,
+    city_name VARCHAR(80) NOT NULL,
+    synced_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS bus_stops (
+    node_id VARCHAR(30) PRIMARY KEY,
+    node_name VARCHAR(120) NOT NULL,
+    node_no VARCHAR(30),
+    city_code VARCHAR(5) NOT NULL,
+    latitude DOUBLE NOT NULL,
+    longitude DOUBLE NOT NULL,
+    synced_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_bus_stops_city (city_code),
+    INDEX idx_bus_stops_lat_lng (latitude, longitude),
+    CONSTRAINT fk_bus_stops_city
+        FOREIGN KEY (city_code) REFERENCES bus_city_codes(city_code)
+        ON DELETE CASCADE
 );
