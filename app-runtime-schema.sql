@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS dongcodes (
 
 CREATE TABLE IF NOT EXISTS houseinfos (
     apt_seq VARCHAR(40) PRIMARY KEY,
-    dong_code VARCHAR(10),
     sgg_cd VARCHAR(5),
     umd_cd VARCHAR(5),
     umd_nm VARCHAR(80),
@@ -27,8 +26,7 @@ CREATE TABLE IF NOT EXISTS houseinfos (
     apt_nm VARCHAR(120),
     build_year INT,
     latitude VARCHAR(30),
-    longitude VARCHAR(30),
-    FOREIGN KEY (dong_code) REFERENCES dongcodes (dong_code)
+    longitude VARCHAR(30)
 );
 
 CREATE TABLE IF NOT EXISTS housedeals (

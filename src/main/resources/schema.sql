@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS dongcodes (
 
 CREATE TABLE IF NOT EXISTS houseinfos (
     apt_seq VARCHAR(40) PRIMARY KEY,
-    dong_code VARCHAR(10),
     sgg_cd VARCHAR(5),
     umd_cd VARCHAR(5),
     umd_nm VARCHAR(80),
