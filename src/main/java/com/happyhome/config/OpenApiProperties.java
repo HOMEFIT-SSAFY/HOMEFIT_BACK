@@ -11,6 +11,7 @@ public class OpenApiProperties {
     private final Bus bus = new Bus();
     private final Lh lh = new Lh();
     private final Commercial commercial = new Commercial();
+    private final Finlife finlife = new Finlife();
 
     public Data getData() {
         return data;
@@ -34,6 +35,10 @@ public class OpenApiProperties {
 
     public Commercial getCommercial() {
         return commercial;
+    }
+
+    public Finlife getFinlife() {
+        return finlife;
     }
 
     public static class Data {
@@ -159,6 +164,36 @@ public class OpenApiProperties {
 
         public void setRadiusUrl(String radiusUrl) {
             this.radiusUrl = radiusUrl;
+        }
+    }
+
+    public static class Finlife {
+        private String auth = "";
+        private String mortgageLoanUrl = "";
+        private String rentHouseLoanUrl = "";
+
+        public String getAuth() {
+            return auth;
+        }
+
+        public void setAuth(String auth) {
+            this.auth = auth;
+        }
+
+        public String getMortgageLoanUrl() {
+            return mortgageLoanUrl;
+        }
+
+        public void setMortgageLoanUrl(String mortgageLoanUrl) {
+            this.mortgageLoanUrl = mortgageLoanUrl;
+        }
+
+        public String getRentHouseLoanUrl() {
+            return rentHouseLoanUrl;
+        }
+
+        public void setRentHouseLoanUrl(String rentHouseLoanUrl) {
+            this.rentHouseLoanUrl = rentHouseLoanUrl;
         }
     }
 }

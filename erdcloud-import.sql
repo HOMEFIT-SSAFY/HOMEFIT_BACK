@@ -194,6 +194,42 @@ CREATE TABLE rental_notification_logs (
     FOREIGN KEY (user_id) REFERENCES members (user_id)
 );
 
+CREATE TABLE loan_products (
+    product_code VARCHAR(80) NOT NULL,
+    loan_type VARCHAR(30) NOT NULL,
+    company_code VARCHAR(30),
+    company_name VARCHAR(120) NOT NULL,
+    product_name VARCHAR(200) NOT NULL,
+    join_way VARCHAR(300),
+    loan_incidental_expense VARCHAR(4000),
+    early_repayment_fee VARCHAR(4000),
+    delinquency_rate VARCHAR(4000),
+    loan_limit VARCHAR(4000),
+    disclosure_start_day VARCHAR(20),
+    disclosure_end_day VARCHAR(20),
+    submitted_at VARCHAR(30),
+    source VARCHAR(20),
+    cached_at TIMESTAMP,
+    PRIMARY KEY (product_code)
+);
+
+CREATE TABLE loan_rate_options (
+    rate_option_id BIGINT NOT NULL,
+    product_code VARCHAR(80) NOT NULL,
+    repayment_type_code VARCHAR(20),
+    repayment_type_name VARCHAR(80),
+    rate_type_code VARCHAR(20),
+    rate_type_name VARCHAR(80),
+    mortgage_type_code VARCHAR(20),
+    mortgage_type_name VARCHAR(80),
+    rate_min DECIMAL(5, 2),
+    rate_max DECIMAL(5, 2),
+    rate_avg DECIMAL(5, 2),
+    cached_at TIMESTAMP,
+    PRIMARY KEY (rate_option_id),
+    FOREIGN KEY (product_code) REFERENCES loan_products (product_code)
+);
+
 CREATE TABLE analysis_snapshot (
     analysis_id BIGINT NOT NULL,
     user_id VARCHAR(50),

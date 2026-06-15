@@ -1,4 +1,24 @@
 [INFO] Scanning for projects...
+Downloading from central: https://repo.maven.apache.org/maven2/org/cyclonedx/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/flywaydb/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/io/github/git-commit-id/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/boot/maven-metadata.xml
+Progress (1): 243 BProgress (2): 243 B | 255 BProgress (3): 243 B | 255 B | 234 BProgress (4): 243 B | 255 B | 234 B | 249 B                                           Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/boot/maven-metadata.xml (249 B at 133 B/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/cyclonedx/maven-metadata.xml (243 B at 130 B/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/io/github/git-commit-id/maven-metadata.xml (255 B at 136 B/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/flywaydb/maven-metadata.xml (234 B at 125 B/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/jooq/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/liquibase/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/graalvm/buildtools/maven-metadata.xml
+Progress (1): 398 BProgress (2): 398 B | 375 BProgress (3): 398 B | 375 B | 242 BProgress (4): 398 B | 375 B | 242 B | 394 B                                           Downloaded from central: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/maven-metadata.xml (375 B at 3.9 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml
+Downloaded from central: https://repo.maven.apache.org/maven2/org/jooq/maven-metadata.xml (398 B at 4.0 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml
+Downloaded from central: https://repo.maven.apache.org/maven2/org/liquibase/maven-metadata.xml (394 B at 3.5 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/graalvm/buildtools/maven-metadata.xml (242 B at 2.3 kB/s)
+Progress (1): 4.6 kBProgress (1): 9.7 kBProgress (1): 14 kB Progress (2): 14 kB | 3.1 kBProgress (2): 14 kB | 7.7 kBProgress (2): 14 kB | 12 kB Progress (2): 14 kB | 17 kBProgress (2): 14 kB | 20 kBProgress (2): 14 kB | 21 kB                           Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml (14 kB at 95 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml (21 kB at 81 kB/s)
 [INFO] 
 [INFO] -----------------------< com.happyhome:pjt_back >-----------------------
 [INFO] Building pjt_back 0.0.1-SNAPSHOT
@@ -35,25 +55,211 @@
 
  :: Spring Boot ::                (v4.0.6)
 
-2026-06-12T19:45:38.743+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Starting TempApplication using Java 17.0.17 with PID 16268 (C:\SSAFY\workspace\관통\PJT_BACK\target\classes started by user in C:\SSAFY\workspace\관통\PJT_BACK)
-2026-06-12T19:45:38.743+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : No active profile set, falling back to 1 default profile: "default"
-2026-06-12T19:45:38.820+09:00  INFO 16268 --- [pjt_back] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2026-06-12T19:45:38.820+09:00  INFO 16268 --- [pjt_back] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2026-06-12T19:45:40.695+09:00  INFO 16268 --- [pjt_back] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
-2026-06-12T19:45:40.717+09:00  INFO 16268 --- [pjt_back] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-06-12T19:45:40.717+09:00  INFO 16268 --- [pjt_back] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
-2026-06-12T19:45:40.792+09:00  INFO 16268 --- [pjt_back] [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1971 ms
-2026-06-12T19:45:41.237+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-06-12T19:45:41.485+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1b84d7d7
-2026-06-12T19:45:41.490+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-06-12T19:45:42.426+09:00  INFO 16268 --- [pjt_back] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name memberUserDetailsService
-2026-06-12T19:45:42.718+09:00  WARN 16268 --- [pjt_back] [  restartedMain] o.s.w.s.resource.ResourceHandlerUtils    : Appended trailing slash to static resource location: file:///C:/SSAFY/workspace/관통/PJT_BACK/uploads/
-2026-06-12T19:45:43.145+09:00  INFO 16268 --- [pjt_back] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
-2026-06-12T19:45:43.166+09:00  INFO 16268 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Started TempApplication in 4.852 seconds (process running for 5.411)
-2026-06-12T19:45:43.170+09:00  INFO 16268 --- [pjt_back] [  restartedMain] o.s.b.b.a.JobLauncherApplicationRunner   : Running default command line with: []
-2026-06-12T19:45:43.170+09:00  WARN 16268 --- [pjt_back] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
-2026-06-12T19:45:43.170+09:00  WARN 16268 --- [pjt_back] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
-2026-06-12T19:45:45.791+09:00  INFO 16268 --- [pjt_back] [nio-8080-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-06-12T19:45:45.798+09:00  INFO 16268 --- [pjt_back] [nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-06-12T19:45:45.800+09:00  INFO 16268 --- [pjt_back] [nio-8080-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
-2026-06-12T19:45:46.709+09:00  WARN 16268 --- [pjt_back] [nio-8080-exec-3] com.happyhome.ai.HappyHomeAiService      : HappyHome AI chat failed: 404: {"message":"[OpenAI 에러] Request failed with status code 404","statusCode":404}
+2026-06-14T20:32:40.746+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Starting TempApplication using Java 17.0.17 with PID 16460 (C:\SSAFY\workspace\관통\PJT_BACK\target\classes started by user in C:\SSAFY\workspace\관통\PJT_BACK)
+2026-06-14T20:32:40.764+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-06-14T20:32:41.145+09:00  INFO 16460 --- [pjt_back] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-14T20:32:41.148+09:00  INFO 16460 --- [pjt_back] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-14T20:32:53.676+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-06-14T20:32:53.749+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-14T20:32:53.751+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-06-14T20:32:54.282+09:00  INFO 16460 --- [pjt_back] [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 13128 ms
+2026-06-14T20:32:56.633+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-14T20:32:58.157+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1859f3cd
+2026-06-14T20:32:58.164+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-14T20:33:03.075+09:00  INFO 16460 --- [pjt_back] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name memberUserDetailsService
+2026-06-14T20:33:05.046+09:00  WARN 16460 --- [pjt_back] [  restartedMain] o.s.w.s.resource.ResourceHandlerUtils    : Appended trailing slash to static resource location: file:///C:/SSAFY/workspace/관통/PJT_BACK/uploads/
+2026-06-14T20:33:08.420+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-06-14T20:33:08.492+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Started TempApplication in 31.384 seconds (process running for 35.881)
+2026-06-14T20:33:08.509+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.s.b.b.a.JobLauncherApplicationRunner   : Running default command line with: []
+2026-06-14T20:33:08.516+09:00  WARN 16460 --- [pjt_back] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-06-14T20:33:08.517+09:00  WARN 16460 --- [pjt_back] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-06-14T20:33:40.563+09:00  INFO 16460 --- [pjt_back] [nio-8080-exec-4] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-14T20:33:40.563+09:00  INFO 16460 --- [pjt_back] [nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-14T20:33:40.569+09:00  INFO 16460 --- [pjt_back] [nio-8080-exec-4] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2026-06-14T20:36:14.830+09:00  WARN 16460 --- [pjt_back] [nio-8080-exec-3] o.a.c.util.SessionIdGeneratorBase        : Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [201] milliseconds.
+2026-06-14T20:49:57.098+09:00  INFO 16460 --- [pjt_back] [nio-8080-exec-8] o.apache.coyote.http11.Http11Processor   : Error parsing HTTP request header
+ Note: further occurrences of HTTP request parsing errors will be logged at DEBUG level.
+
+java.lang.IllegalArgumentException: Invalid character found in the request target [/api/regions/guguns?sidoName=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C\ ]. The valid characters are defined in RFC 7230 and RFC 3986
+	at org.apache.coyote.http11.Http11InputBuffer.parseRequestLine(Http11InputBuffer.java:466) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:270) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1801) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57) ~[tomcat-embed-core-11.0.21.jar:11.0.21]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+
+2026-06-14T21:24:22.815+09:00  INFO 16460 --- [pjt_back] [   File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-06-14T21:24:22.878+09:00  INFO 16460 --- [pjt_back] [       Thread-1] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-14T21:24:23.792+09:00  INFO 16460 --- [pjt_back] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-06-14T21:24:23.832+09:00  INFO 16460 --- [pjt_back] [       Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-06-14T21:24:23.847+09:00  INFO 16460 --- [pjt_back] [       Thread-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-06-14T21:24:24.230+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Starting TempApplication using Java 17.0.17 with PID 16460 (C:\SSAFY\workspace\관통\PJT_BACK\target\classes started by user in C:\SSAFY\workspace\관통\PJT_BACK)
+2026-06-14T21:24:24.232+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-06-14T21:24:24.239+09:00  WARN 16460 --- [pjt_back] [  restartedMain] o.s.core.annotation.MergedAnnotation     : Failed to introspect meta-annotation @EnableConfigurationProperties on class com.happyhome.TempApplication: java.lang.TypeNotPresentException: Type com.happyhome.config.OpenApiProperties not present
+2026-06-14T21:24:24.265+09:00  WARN 16460 --- [pjt_back] [  restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: I/O failure while processing configuration class [null]
+2026-06-14T21:24:24.385+09:00 ERROR 16460 --- [pjt_back] [  restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanDefinitionStoreException: I/O failure while processing configuration class [null]
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:288) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:206) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:174) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:452) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:316) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:349) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:118) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:795) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:603) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.6.jar:4.0.6]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.6.jar:4.0.6]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.6.jar:4.0.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.6.jar:4.0.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.6.jar:4.0.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.6.jar:4.0.6]
+	at com.happyhome.TempApplication.main(TempApplication.java:15) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.6.jar:4.0.6]
+Caused by: java.io.FileNotFoundException: class path resource [com/happyhome/TempApplication.class] cannot be opened because it does not exist
+	at org.springframework.core.io.ClassPathResource.getInputStream(ClassPathResource.java:212) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.SimpleMetadataReader.getClassReader(SimpleMetadataReader.java:54) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.SimpleMetadataReader.<init>(SimpleMetadataReader.java:48) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.SimpleMetadataReaderFactory.getMetadataReader(SimpleMetadataReaderFactory.java:62) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.CachingMetadataReaderFactory.getMetadataReader(CachingMetadataReaderFactory.java:127) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.AbstractMetadataReaderFactory.getMetadataReader(AbstractMetadataReaderFactory.java:62) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.CachingMetadataReaderFactory.getMetadataReader(CachingMetadataReaderFactory.java:40) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.asSourceClass(ConfigurationClassParser.java:728) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.asSourceClass(ConfigurationClassParser.java:694) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.asSourceClass(ConfigurationClassParser.java:672) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:281) ~[spring-context-7.0.7.jar:7.0.7]
+	... 20 common frames omitted
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-06-14T21:24:26.466+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Starting TempApplication using Java 17.0.17 with PID 16460 (C:\SSAFY\workspace\관통\PJT_BACK\target\classes started by user in C:\SSAFY\workspace\관통\PJT_BACK)
+2026-06-14T21:24:26.467+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-06-14T21:24:26.473+09:00  WARN 16460 --- [pjt_back] [  restartedMain] o.s.core.annotation.MergedAnnotation     : Failed to introspect meta-annotation @EnableConfigurationProperties on class com.happyhome.TempApplication: java.lang.TypeNotPresentException: Type com.happyhome.config.OpenApiProperties not present
+2026-06-14T21:24:26.487+09:00  WARN 16460 --- [pjt_back] [  restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: I/O failure while processing configuration class [null]
+2026-06-14T21:24:26.507+09:00 ERROR 16460 --- [pjt_back] [  restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanDefinitionStoreException: I/O failure while processing configuration class [null]
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:288) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:206) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:174) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:452) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:316) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:349) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:118) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:795) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:603) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.6.jar:4.0.6]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.6.jar:4.0.6]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.6.jar:4.0.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.6.jar:4.0.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.6.jar:4.0.6]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.6.jar:4.0.6]
+	at com.happyhome.TempApplication.main(TempApplication.java:15) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:52) ~[spring-boot-devtools-4.0.6.jar:4.0.6]
+Caused by: java.io.FileNotFoundException: class path resource [com/happyhome/TempApplication.class] cannot be opened because it does not exist
+	at org.springframework.core.io.ClassPathResource.getInputStream(ClassPathResource.java:212) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.SimpleMetadataReader.getClassReader(SimpleMetadataReader.java:54) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.SimpleMetadataReader.<init>(SimpleMetadataReader.java:48) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.SimpleMetadataReaderFactory.getMetadataReader(SimpleMetadataReaderFactory.java:62) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.CachingMetadataReaderFactory.getMetadataReader(CachingMetadataReaderFactory.java:127) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.AbstractMetadataReaderFactory.getMetadataReader(AbstractMetadataReaderFactory.java:62) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.core.type.classreading.CachingMetadataReaderFactory.getMetadataReader(CachingMetadataReaderFactory.java:40) ~[spring-core-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.asSourceClass(ConfigurationClassParser.java:728) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.asSourceClass(ConfigurationClassParser.java:694) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.asSourceClass(ConfigurationClassParser.java:672) ~[spring-context-7.0.7.jar:7.0.7]
+	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:281) ~[spring-context-7.0.7.jar:7.0.7]
+	... 20 common frames omitted
+
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-06-14T21:24:48.443+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Starting TempApplication using Java 17.0.17 with PID 16460 (C:\SSAFY\workspace\관통\PJT_BACK\target\classes started by user in C:\SSAFY\workspace\관통\PJT_BACK)
+2026-06-14T21:24:48.443+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-06-14T21:24:52.458+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-06-14T21:24:52.458+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-14T21:24:52.458+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-06-14T21:24:52.795+09:00  INFO 16460 --- [pjt_back] [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 4327 ms
+2026-06-14T21:24:53.364+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-06-14T21:24:53.414+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3beb1d8f
+2026-06-14T21:24:53.416+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-06-14T21:24:54.520+09:00  INFO 16460 --- [pjt_back] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name memberUserDetailsService
+2026-06-14T21:24:55.115+09:00  WARN 16460 --- [pjt_back] [  restartedMain] o.s.w.s.resource.ResourceHandlerUtils    : Appended trailing slash to static resource location: file:///C:/SSAFY/workspace/관통/PJT_BACK/uploads/
+2026-06-14T21:24:55.592+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-06-14T21:24:55.613+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Started TempApplication in 7.324 seconds (process running for 3143.003)
+2026-06-14T21:24:55.615+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.s.b.b.a.JobLauncherApplicationRunner   : Running default command line with: []
+2026-06-14T21:24:55.615+09:00  WARN 16460 --- [pjt_back] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-06-14T21:24:55.615+09:00  WARN 16460 --- [pjt_back] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-06-14T21:24:55.615+09:00  INFO 16460 --- [pjt_back] [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2026-06-14T21:26:33.448+09:00  INFO 16460 --- [pjt_back] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-14T21:26:33.449+09:00  INFO 16460 --- [pjt_back] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-14T21:26:33.454+09:00  INFO 16460 --- [pjt_back] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2026-06-14T21:32:46.646+09:00  INFO 16460 --- [pjt_back] [   File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2026-06-14T21:32:46.658+09:00  INFO 16460 --- [pjt_back] [      Thread-29] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-14T21:32:48.381+09:00  INFO 16460 --- [pjt_back] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-06-14T21:32:48.394+09:00  INFO 16460 --- [pjt_back] [      Thread-29] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2026-06-14T21:32:48.407+09:00  INFO 16460 --- [pjt_back] [      Thread-29] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-06-14T21:32:48.744+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Starting TempApplication using Java 17.0.17 with PID 16460 (C:\SSAFY\workspace\관통\PJT_BACK\target\classes started by user in C:\SSAFY\workspace\관통\PJT_BACK)
+2026-06-14T21:32:48.746+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-06-14T21:32:51.493+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-06-14T21:32:51.505+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-14T21:32:51.508+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-06-14T21:32:51.867+09:00  INFO 16460 --- [pjt_back] [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 3107 ms
+2026-06-14T21:32:52.561+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2026-06-14T21:32:52.615+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1353fe08
+2026-06-14T21:32:52.625+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2026-06-14T21:32:53.947+09:00  INFO 16460 --- [pjt_back] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name memberUserDetailsService
+2026-06-14T21:32:54.380+09:00  WARN 16460 --- [pjt_back] [  restartedMain] o.s.w.s.resource.ResourceHandlerUtils    : Appended trailing slash to static resource location: file:///C:/SSAFY/workspace/관통/PJT_BACK/uploads/
+2026-06-14T21:32:54.848+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-06-14T21:32:54.864+09:00  INFO 16460 --- [pjt_back] [  restartedMain] com.happyhome.TempApplication            : Started TempApplication in 6.312 seconds (process running for 3622.254)
+2026-06-14T21:32:54.866+09:00  INFO 16460 --- [pjt_back] [  restartedMain] o.s.b.b.a.JobLauncherApplicationRunner   : Running default command line with: []
+2026-06-14T21:32:54.866+09:00  WARN 16460 --- [pjt_back] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-06-14T21:32:54.866+09:00  WARN 16460 --- [pjt_back] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-06-14T21:32:54.872+09:00  INFO 16460 --- [pjt_back] [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged

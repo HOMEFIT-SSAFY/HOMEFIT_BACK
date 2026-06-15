@@ -154,6 +154,40 @@ CREATE TABLE IF NOT EXISTS openapi_sync_logs (
     error_message TEXT
 );
 
+CREATE TABLE IF NOT EXISTS loan_products (
+    product_code VARCHAR(80) PRIMARY KEY,
+    loan_type VARCHAR(30) NOT NULL,
+    company_code VARCHAR(30),
+    company_name VARCHAR(120) NOT NULL,
+    product_name VARCHAR(200) NOT NULL,
+    join_way VARCHAR(300),
+    loan_incidental_expense TEXT,
+    early_repayment_fee TEXT,
+    delinquency_rate TEXT,
+    loan_limit TEXT,
+    disclosure_start_day VARCHAR(20),
+    disclosure_end_day VARCHAR(20),
+    submitted_at VARCHAR(30),
+    source VARCHAR(20) DEFAULT 'api',
+    cached_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS loan_rate_options (
+    rate_option_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    product_code VARCHAR(80) NOT NULL,
+    repayment_type_code VARCHAR(20),
+    repayment_type_name VARCHAR(80),
+    rate_type_code VARCHAR(20),
+    rate_type_name VARCHAR(80),
+    mortgage_type_code VARCHAR(20),
+    mortgage_type_name VARCHAR(80),
+    rate_min DECIMAL(5, 2),
+    rate_max DECIMAL(5, 2),
+    rate_avg DECIMAL(5, 2),
+    cached_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_code) REFERENCES loan_products (product_code)
+);
+
 CREATE TABLE IF NOT EXISTS analysis_snapshot (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     label VARCHAR(120) NOT NULL,
