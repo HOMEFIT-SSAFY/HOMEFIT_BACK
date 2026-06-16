@@ -1,6 +1,5 @@
 package com.happyhome.house.controller;
 
-import com.happyhome.config.OpenApiProperties;
 import com.happyhome.house.dto.HouseDeal;
 import com.happyhome.house.dto.HouseSearchCondition;
 import com.happyhome.member.dto.MemberDto;
@@ -21,18 +20,15 @@ public class HouseController {
 
     private final HouseDealService houseDealService;
     private final RegionService regionService;
-    private final OpenApiProperties openApiProperties;
     private final FavoriteDealService favoriteDealService;
 
     public HouseController(
             HouseDealService houseDealService,
             RegionService regionService,
-            OpenApiProperties openApiProperties,
             FavoriteDealService favoriteDealService
     ) {
         this.houseDealService = houseDealService;
         this.regionService = regionService;
-        this.openApiProperties = openApiProperties;
         this.favoriteDealService = favoriteDealService;
     }
 
@@ -48,7 +44,6 @@ public class HouseController {
         model.addAttribute("sidos", regionService.findSidos());
         model.addAttribute("guguns", regionService.findGuguns(condition.getSidoName()));
         model.addAttribute("dongs", regionService.findDongs(condition.getSidoName(), condition.getGugunName()));
-        model.addAttribute("kakaoKey", openApiProperties.getKakao().getJavascriptKey());
         return "prices";
     }
 }

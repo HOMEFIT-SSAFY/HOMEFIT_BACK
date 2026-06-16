@@ -4,6 +4,7 @@ import com.happyhome.openapi.BusOpenApiClient;
 import com.happyhome.transport.dao.BusStopMapper;
 import com.happyhome.transport.dto.BusCityCode;
 import com.happyhome.transport.dto.BusStop;
+import com.happyhome.transport.dto.BusStopStatus;
 import com.happyhome.transport.dto.BusStopSyncResult;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,15 @@ public class BusStopSyncService {
         int fetchedCount = 0;
         int savedCount = 0;
 
+        if (!busOpenApiClient.isConfigured()) {
+            return new BusStopSyncResult("FAILED", 0, 0, 0,
+                    List.of("OPENAPI_BUS_SERVICE_KEY is not configured."));
+        }
+
         List<BusCityCode> cityCodes = busOpenApiClient.cityCodes();
         if (cityCodes.isEmpty()) {
             return new BusStopSyncResult("FAILED", 0, 0, 0,
-                    List.of("No city codes returned. Check OPENAPI_BUS_SERVICE_KEY."));
+                    List.of("No city codes returned from the bus open API."));
         }
 
         int cityLimit = maxCities == null || maxCities <= 0
@@ -55,5 +61,20 @@ public class BusStopSyncService {
 
     public int countBusStops() {
         return busStopMapper.countBusStops();
+    }
+
+    public BusStopStatus status() {
+        boolean configured = busOpenApiClient.isConfigured();
+        int count = busStopMapper.countBusStops();
+        boolean ready = count > 0;
+        String message;
+        if (!configured) {
+            message = "OPENAPI_BUS_SERVICE_KEY is not configured.";
+        } else if (!ready) {
+            message = "No bus stops are loaded. Run POST /api/bus-stops/sync first.";
+        } else {
+            message = "Bus stop data is ready.";
+        }
+        return new BusStopStatus(configured, count, ready, message);
     }
 }

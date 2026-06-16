@@ -75,16 +75,7 @@ public class OpenApiProperties {
     }
 
     public static class Kakao {
-        private String javascriptKey = "";
         private String restKey = "";
-
-        public String getJavascriptKey() {
-            return javascriptKey;
-        }
-
-        public void setJavascriptKey(String javascriptKey) {
-            this.javascriptKey = javascriptKey;
-        }
 
         public String getRestKey() {
             return restKey;

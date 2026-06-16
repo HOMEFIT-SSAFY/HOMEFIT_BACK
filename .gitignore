@@ -30,7 +30,20 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Codex / AI tooling ###
 .gstack/
+.codex/
+.agents/
+.claude/
+.gbrain/
+.gbrain-source
+.worktrees/
+worktrees/
+
+### Local env / runtime logs ###
 .env
 .env.*
 !.env.example
+*.log
+spring-run*.log

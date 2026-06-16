@@ -69,9 +69,13 @@ public class BusOpenApiClient {
                 .body(String.class);
     }
 
-    private boolean configured() {
+    public boolean isConfigured() {
         return OpenApiUri.hasText(properties.getBus().getServiceKey())
                 && OpenApiUri.hasText(properties.getBus().getBaseUrl());
+    }
+
+    private boolean configured() {
+        return isConfigured();
     }
 
     private BusCityCode cityCode(JsonNode node) {

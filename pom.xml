@@ -23,6 +23,7 @@
         <mybatis-spring-boot.version>4.0.1</mybatis-spring-boot.version>
         <springdoc-openapi.version>3.0.3</springdoc-openapi.version>
         <spring-ai.version>2.0.0-RC2</spring-ai.version>
+        <swagger-core.version>2.2.47</swagger-core.version>
         <swagger-ui.version>5.29.4</swagger-ui.version>
     </properties>
 
@@ -34,6 +35,16 @@
                 <version>${spring-ai.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
+                <version>${swagger-core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

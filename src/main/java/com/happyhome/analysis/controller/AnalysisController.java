@@ -1,6 +1,5 @@
 package com.happyhome.analysis.controller;
 
-import com.happyhome.config.OpenApiProperties;
 import com.happyhome.analysis.service.AnalysisService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,11 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AnalysisController {
 
     private final AnalysisService analysisService;
-    private final OpenApiProperties properties;
 
-    public AnalysisController(AnalysisService analysisService, OpenApiProperties properties) {
+    public AnalysisController(AnalysisService analysisService) {
         this.analysisService = analysisService;
-        this.properties = properties;
     }
 
     @GetMapping("/analysis")
@@ -27,7 +24,6 @@ public class AnalysisController {
             Model model
     ) {
         model.addAttribute("analysis", analysisService.analyze(label, longitude, latitude, radius));
-        model.addAttribute("kakaoKey", properties.getKakao().getJavascriptKey());
         return "analysis";
     }
 }
