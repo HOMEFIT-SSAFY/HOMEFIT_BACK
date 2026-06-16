@@ -1,12 +1,15 @@
 package com.happyhome.config;
 
 import com.happyhome.security.LoginSuccessHandler;
+import com.happyhome.security.OAuth2LoginSuccessHandler;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +20,12 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, LoginSuccessHandler loginSuccessHandler)
+    SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            LoginSuccessHandler loginSuccessHandler,
+            OAuth2LoginSuccessHandler oauth2LoginSuccessHandler,
+            ObjectProvider<ClientRegistrationRepository> clientRegistrationRepository
+    )
             throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
@@ -25,7 +33,8 @@ public class SecurityConfig {
                                 "/", "/home", "/login", "/register", "/password-find",
                                 "/prices", "/trades", "/rentals", "/rentals/*", "/analysis",
                                 "/notices", "/notices/*", "/notices/*/*",
-                                "/api/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
+                                "/api/**", "/oauth2/**", "/login/oauth2/**",
+                                "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**",
                                 "/webjars/**", "/css/**", "/img/**"
                         ).permitAll()
                         .requestMatchers("/member/**").authenticated()
@@ -48,6 +57,13 @@ public class SecurityConfig {
                                 PathPatternRequestMatcher.pathPattern("/api/**"),
                                 PathPatternRequestMatcher.pathPattern("/notices/**")
                         ));
+
+        if (clientRegistrationRepository.getIfAvailable() != null) {
+            http.oauth2Login(oauth -> oauth
+                    .loginPage("/login")
+                    .successHandler(oauth2LoginSuccessHandler)
+                    .failureUrl("/login?oauthError"));
+        }
 
         return http.build();
     }

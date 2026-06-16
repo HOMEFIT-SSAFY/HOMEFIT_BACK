@@ -41,6 +41,36 @@ class MemberServiceTest {
     }
 
     @Test
+    void findOrCreateOAuthMemberCreatesSocialMemberWithEncodedPassword() {
+        FakeMemberDao memberDao = new FakeMemberDao();
+        MemberService memberService = new MemberService(memberDao, passwordEncoder);
+
+        MemberDto member = memberService.findOrCreateOAuthMember(
+                "kakao",
+                "123456789",
+                "social@example.com",
+                "소셜회원"
+        );
+
+        assertThat(member.getUserId()).isEqualTo("oauth_kakao_123456789");
+        assertThat(member.getName()).isEqualTo("소셜회원");
+        assertThat(member.getEmail()).isEqualTo("social@example.com");
+        assertThat(memberDao.saved.get(member.getUserId()).getPassword()).startsWith("{bcrypt}");
+    }
+
+    @Test
+    void findOrCreateOAuthMemberReturnsExistingSocialMember() {
+        FakeMemberDao memberDao = new FakeMemberDao();
+        memberDao.saved.put("oauth_google_abc", member("oauth_google_abc", "{bcrypt}stored"));
+        MemberService memberService = new MemberService(memberDao, passwordEncoder);
+
+        MemberDto member = memberService.findOrCreateOAuthMember("google", "abc", "new@example.com", "새 이름");
+
+        assertThat(member.getEmail()).isEqualTo("oauth_google_abc@example.com");
+        assertThat(member.getName()).isEqualTo("싸피");
+    }
+
+    @Test
     void updateEncodesNewPassword() {
         FakeMemberDao memberDao = new FakeMemberDao();
         memberDao.saved.put("ssafy", member("ssafy", "{bcrypt}old"));
