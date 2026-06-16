@@ -1,11 +1,11 @@
 package com.happyhome.transport.controller;
 
 import com.happyhome.transport.dto.BusStop;
+import com.happyhome.transport.dto.BusStopStatus;
 import com.happyhome.transport.dto.BusStopSyncResult;
 import com.happyhome.transport.service.BusStopService;
 import com.happyhome.transport.service.BusStopSyncService;
 import java.util.List;
-import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,9 +34,9 @@ public class BusStopRestController {
         return busStopService.findNearby(latitude, longitude, radiusMeters, limit);
     }
 
-    @GetMapping("/count")
-    public Map<String, Integer> count() {
-        return Map.of("count", busStopSyncService.countBusStops());
+    @GetMapping("/status")
+    public BusStopStatus status() {
+        return busStopSyncService.status();
     }
 
     @PostMapping("/sync")
