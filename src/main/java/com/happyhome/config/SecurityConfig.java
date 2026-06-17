@@ -2,6 +2,7 @@ package com.happyhome.config;
 
 import com.happyhome.security.LoginSuccessHandler;
 import com.happyhome.security.OAuth2LoginSuccessHandler;
+import com.happyhome.security.ProviderCompatibleAuthorizationRequestResolver;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.ObjectProvider;
@@ -24,6 +25,7 @@ public class SecurityConfig {
             HttpSecurity http,
             LoginSuccessHandler loginSuccessHandler,
             OAuth2LoginSuccessHandler oauth2LoginSuccessHandler,
+            ObjectProvider<ProviderCompatibleAuthorizationRequestResolver> authorizationRequestResolver,
             ObjectProvider<ClientRegistrationRepository> clientRegistrationRepository
     )
             throws Exception {
@@ -61,6 +63,8 @@ public class SecurityConfig {
         if (clientRegistrationRepository.getIfAvailable() != null) {
             http.oauth2Login(oauth -> oauth
                     .loginPage("/login")
+                    .authorizationEndpoint(endpoint -> endpoint
+                            .authorizationRequestResolver(authorizationRequestResolver.getIfAvailable()))
                     .successHandler(oauth2LoginSuccessHandler)
                     .failureUrl("/login?oauthError"));
         }

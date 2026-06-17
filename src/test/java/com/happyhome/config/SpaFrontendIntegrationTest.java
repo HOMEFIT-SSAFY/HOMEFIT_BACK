@@ -2,6 +2,7 @@ package com.happyhome.config;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,5 +30,13 @@ class SpaFrontendIntegrationTest {
         mockMvc.perform(get(path))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("<div id=\"app\"></div>")));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/login/oauth2/code/kakao", "/login/oauth2/code/google"})
+    void doesNotServeVueApplicationForOAuthCallbackRoutes(String path) throws Exception {
+        mockMvc.perform(get(path))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login?oauthError"));
     }
 }

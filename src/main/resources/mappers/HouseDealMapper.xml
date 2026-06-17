@@ -56,7 +56,16 @@
 
     <select id="search" resultMap="houseDealMap">
         <include refid="selectClause"/>
-        <include refid="baseFrom"/>
+        <choose>
+            <when test="keyword == null or keyword.trim() == ''">
+                FROM housedeals d FORCE INDEX (idx_housedeals_date_no)
+                STRAIGHT_JOIN houseinfos h ON d.apt_seq = h.apt_seq
+                STRAIGHT_JOIN dongcodes dc ON CONCAT(h.sgg_cd, h.umd_cd) = dc.dong_code
+            </when>
+            <otherwise>
+                <include refid="baseFrom"/>
+            </otherwise>
+        </choose>
         <where>
             <if test="keyword != null and keyword.trim() != ''">
                 <bind name="keywordLike" value="'%' + keyword.trim() + '%'"/>
@@ -69,16 +78,13 @@
                 )
             </if>
             <if test="sidoName != null and sidoName.trim() != ''">
-                <bind name="sidoNameLike" value="'%' + sidoName.trim() + '%'"/>
-                AND dc.sido_name LIKE #{sidoNameLike}
+                AND dc.sido_name = #{sidoName}
             </if>
             <if test="gugunName != null and gugunName.trim() != ''">
-                <bind name="gugunNameLike" value="'%' + gugunName.trim() + '%'"/>
-                AND dc.gugun_name LIKE #{gugunNameLike}
+                AND dc.gugun_name = #{gugunName}
             </if>
             <if test="dongName != null and dongName.trim() != ''">
-                <bind name="dongNameLike" value="'%' + dongName.trim() + '%'"/>
-                AND (dc.dong_name LIKE #{dongNameLike} OR h.umd_nm LIKE #{dongNameLike})
+                AND (dc.dong_name = #{dongName} OR h.umd_nm = #{dongName})
             </if>
             <if test="lawdCd != null and lawdCd.trim() != '' and lawdCd.trim().length() &gt;= 5">
                 <bind name="sggCd" value="lawdCd.trim().substring(0, 5)"/>

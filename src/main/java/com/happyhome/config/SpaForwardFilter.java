@@ -67,6 +67,8 @@ public class SpaForwardFilter extends OncePerRequestFilter {
                 || path.equals("/api")
                 || path.startsWith("/app/")
                 || path.startsWith("/uploads/")
+                || path.startsWith("/login/oauth2/")
+                || path.startsWith("/oauth2/")
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")
                 || path.contains(".")) {

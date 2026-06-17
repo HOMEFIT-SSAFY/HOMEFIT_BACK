@@ -24,7 +24,9 @@ CREATE TABLE IF NOT EXISTS dongcodes (
     dong_code VARCHAR(10) PRIMARY KEY,
     sido_name VARCHAR(30),
     gugun_name VARCHAR(30),
-    dong_name VARCHAR(30)
+    dong_name VARCHAR(30),
+    INDEX idx_dongcodes_sido_gugun_dong (sido_name, gugun_name, dong_name),
+    INDEX idx_dongcodes_region_code (sido_name, gugun_name, dong_name, dong_code)
 );
 
 CREATE TABLE IF NOT EXISTS houseinfos (
@@ -40,7 +42,9 @@ CREATE TABLE IF NOT EXISTS houseinfos (
     apt_nm VARCHAR(120),
     build_year INT,
     latitude VARCHAR(30),
-    longitude VARCHAR(30)
+    longitude VARCHAR(30),
+    INDEX idx_houseinfos_region_seq (sgg_cd, umd_cd, apt_seq),
+    INDEX idx_houseinfos_apt_nm (apt_nm)
 );
 
 CREATE TABLE IF NOT EXISTS housedeals (
@@ -52,7 +56,9 @@ CREATE TABLE IF NOT EXISTS housedeals (
     deal_month INT,
     deal_day INT,
     exclu_use_ar DECIMAL(10, 2),
-    deal_amount VARCHAR(40)
+    deal_amount VARCHAR(40),
+    INDEX idx_housedeals_apt_date_no (apt_seq, deal_year DESC, deal_month DESC, deal_day DESC, no DESC),
+    INDEX idx_housedeals_date_no (deal_year DESC, deal_month DESC, deal_day DESC, no DESC)
 );
 
 CREATE TABLE IF NOT EXISTS favorite_deals (
