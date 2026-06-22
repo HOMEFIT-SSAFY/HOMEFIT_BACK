@@ -127,5 +127,10 @@
 		ORDER BY supply_id ASC
 	</select>
 
+	<delete id="deleteApiNoticesBefore">
+		DELETE FROM rental_notice_cache
+		WHERE notice_date &lt; #{noticeDate}
+	</delete>
+
 </mapper>
 

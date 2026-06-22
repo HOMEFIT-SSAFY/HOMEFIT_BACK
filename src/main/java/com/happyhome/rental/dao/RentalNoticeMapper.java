@@ -15,9 +15,11 @@ public interface RentalNoticeMapper {
 
 	List<RentalNotice> findRecent();
 
-	Optional<RentalNotice> findById(String noticeId);
+    Optional<RentalNotice> findById(String noticeId);
 
-	Optional<RentalDetail> findDetailByNoticeId(String noticeId);
+    Optional<RentalDetail> findDetailByNoticeId(String noticeId);
 
-	List<RentalSupply> findSuppliesByNoticeId(String noticeId);
+    List<RentalSupply> findSuppliesByNoticeId(String noticeId);
+
+    void deleteApiNoticesBefore(String noticeDate);
 }

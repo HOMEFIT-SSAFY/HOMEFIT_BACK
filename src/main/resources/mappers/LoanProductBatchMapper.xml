@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.happyhome.batch.mapper.LoanProductBatchMapper">
+
+    <insert id="upsertProduct">
+        INSERT INTO loan_products (
+            product_code,
+            loan_type,
+            company_code,
+            company_name,
+            product_name,
+            join_way,
+            loan_incidental_expense,
+            early_repayment_fee,
+            delinquency_rate,
+            loan_limit,
+            disclosure_start_day,
+            disclosure_end_day,
+            submitted_at,
+            source,
+            cached_at
+        ) VALUES (
+            #{productCode},
+            #{loanType},
+            #{companyCode},
+            #{companyName},
+            #{productName},
+            #{joinWay},
+            #{loanIncidentalExpense},
+            #{earlyRepaymentFee},
+            #{delinquencyRate},
+            #{loanLimit},
+            #{disclosureStartDay},
+            #{disclosureEndDay},
+            #{submittedAt},
+            'api',
+            CURRENT_TIMESTAMP
+        )
+        ON DUPLICATE KEY UPDATE
+            loan_type = VALUES(loan_type),
+            company_code = VALUES(company_code),
+            company_name = VALUES(company_name),
+            product_name = VALUES(product_name),
+            join_way = VALUES(join_way),
+            loan_incidental_expense = VALUES(loan_incidental_expense),
+            early_repayment_fee = VALUES(early_repayment_fee),
+            delinquency_rate = VALUES(delinquency_rate),
+            loan_limit = VALUES(loan_limit),
+            disclosure_start_day = VALUES(disclosure_start_day),
+            disclosure_end_day = VALUES(disclosure_end_day),
+            submitted_at = VALUES(submitted_at),
+            source = VALUES(source),
+            cached_at = CURRENT_TIMESTAMP
+    </insert>
+
+    <delete id="deleteOptionsByProductCode">
+        DELETE FROM loan_rate_options
+        WHERE product_code = #{productCode}
+    </delete>
+
+    <insert id="insertOption">
+        INSERT INTO loan_rate_options (
+            product_code,
+            repayment_type_code,
+            repayment_type_name,
+            rate_type_code,
+            rate_type_name,
+            mortgage_type_code,
+            mortgage_type_name,
+            rate_min,
+            rate_max,
+            rate_avg,
+            cached_at
+        ) VALUES (
+            #{productCode},
+            #{repaymentTypeCode},
+            #{repaymentTypeName},
+            #{rateTypeCode},
+            #{rateTypeName},
+            #{mortgageTypeCode},
+            #{mortgageTypeName},
+            #{rateMin},
+            #{rateMax},
+            #{rateAvg},
+            CURRENT_TIMESTAMP
+        )
+    </insert>
+
+</mapper>

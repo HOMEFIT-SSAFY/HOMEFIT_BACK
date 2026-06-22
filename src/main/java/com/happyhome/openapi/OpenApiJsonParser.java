@@ -13,11 +13,49 @@ public class OpenApiJsonParser {
     public List<JsonNode> items(String json) {
         try {
             JsonNode root = objectMapper.readTree(json);
+            List<JsonNode> detailItems = mergedDetailScheduleItems(root);
+            if (!detailItems.isEmpty()) {
+                return detailItems;
+            }
             JsonNode node = itemNode(root);
             return normalizeItems(node);
         } catch (Exception e) {
             return List.of();
         }
+    }
+
+    private List<JsonNode> mergedDetailScheduleItems(JsonNode root) {
+        if (!root.isArray()) {
+            return List.of();
+        }
+        JsonNode schedule = null;
+        JsonNode site = null;
+        for (JsonNode child : root) {
+            if (schedule == null) {
+                schedule = firstArrayItem(child.path("dsSplScdl"));
+            }
+            if (site == null) {
+                site = firstArrayItem(child.path("dsSbd"));
+            }
+        }
+        if (schedule == null && site == null) {
+            return List.of();
+        }
+        com.fasterxml.jackson.databind.node.ObjectNode merged = objectMapper.createObjectNode();
+        if (schedule != null) {
+            merged.setAll((com.fasterxml.jackson.databind.node.ObjectNode) schedule);
+        }
+        if (site != null) {
+            merged.setAll((com.fasterxml.jackson.databind.node.ObjectNode) site);
+        }
+        return List.of(merged);
+    }
+
+    private JsonNode firstArrayItem(JsonNode node) {
+        if (node.isArray() && !node.isEmpty() && node.get(0).isObject()) {
+            return node.get(0);
+        }
+        return null;
     }
 
     private JsonNode itemNode(JsonNode root) {

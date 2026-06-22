@@ -65,7 +65,7 @@
                         ))
                     )
                 ) AS distance_m
-            FROM bus_stops
+            FROM v_bus_stops_with_city
             WHERE latitude BETWEEN CAST(#{latitude} AS DOUBLE) - (CAST(#{radiusMeters} AS DOUBLE) / CAST(111320.0 AS DOUBLE))
                 AND CAST(#{latitude} AS DOUBLE) + (CAST(#{radiusMeters} AS DOUBLE) / CAST(111320.0 AS DOUBLE))
               AND longitude BETWEEN CAST(#{longitude} AS DOUBLE) - (CAST(#{radiusMeters} AS DOUBLE) / (CAST(111320.0 AS DOUBLE) * COS(RADIANS(CAST(#{latitude} AS DOUBLE)))))

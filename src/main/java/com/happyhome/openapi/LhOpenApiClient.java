@@ -32,9 +32,33 @@ public class LhOpenApiClient {
         this.restClient = RestClient.create();
     }
 
+    public boolean isConfigured() {
+        return OpenApiUri.hasText(properties.getData().getServiceKey());
+    }
+
     public List<RentalNotice> notices(RentalSearchCondition condition) {
-        if (!OpenApiUri.hasText(properties.getData().getServiceKey())) {
+        if (!isConfigured()) {
             return SampleData.rentalNotices();
+        }
+        try {
+            List<RentalNotice> notices = apiNotices(condition);
+            return notices.isEmpty() ? SampleData.rentalNotices() : notices;
+        } catch (Exception e) {
+            return SampleData.rentalNotices();
+        }
+    }
+
+    public List<RentalNotice> apiNotices(RentalSearchCondition condition) {
+        return apiNotices(condition, "2020.01.01", "2099.12.31");
+    }
+
+    public List<RentalNotice> apiNotices(
+            RentalSearchCondition condition,
+            String noticeStartDate,
+            String closeEndDate
+    ) {
+        if (!isConfigured()) {
+            return List.of();
         }
         try {
             String body = restClient.get()
@@ -45,20 +69,20 @@ public class LhOpenApiClient {
                             "PAN_NM", blankToEmpty(condition.keyword()),
                             "CNP_CD", blankToEmpty(condition.regionCode()),
                             "PAN_SS", blankToEmpty(condition.status()),
-                            "PAN_NT_ST_DT", "2020.01.01",
-                            "CLSG_DT", "2099.12.31"
+                            "PAN_NT_ST_DT", noticeStartDate,
+                            "CLSG_DT", closeEndDate
                     )))
                     .retrieve()
                     .body(String.class);
-            List<RentalNotice> notices = parser.items(body).stream().map(this::notice).toList();
-            return notices.isEmpty() ? SampleData.rentalNotices() : notices;
+            return parser.items(body).stream().map(this::notice).toList();
         } catch (Exception e) {
-            return SampleData.rentalNotices();
+            log.warn("LH notice API failed on page {}: {}", condition.page(), e.getMessage());
+            return List.of();
         }
     }
 
     public List<RentalSupply> supplies(RentalNotice notice) {
-        if (!OpenApiUri.hasText(properties.getData().getServiceKey())) {
+        if (!isConfigured()) {
             log.warn("OPENAPI_DATA_SERVICE_KEY is not configured; LH supply API was not called.");
             return List.of();
         }
@@ -82,7 +106,7 @@ public class LhOpenApiClient {
     }
 
     public RentalDetail detail(RentalNotice notice) {
-        if (!OpenApiUri.hasText(properties.getData().getServiceKey())) {
+        if (!isConfigured()) {
             log.warn("OPENAPI_DATA_SERVICE_KEY is not configured; LH detail API was not called.");
             return emptyDetail();
         }
@@ -140,24 +164,21 @@ public class LhOpenApiClient {
     }
 
     private RentalSupply supply(JsonNode node) {
-        String houseType = text(node, "HTY_NNA", text(node, "HTYPE", text(node, "HOUSE_TY_NM", "")));
+        String usage = text(node, "LND_US_DS_CD_NM", text(node, "SPL_INF_TP_NM", text(node, "HTY_NNA", "공급유형")));
         String address = text(node, "LGDN_DTL_ADR", text(node, "ADDR", text(node, "SBD_LGO_NM", "")));
         String lotNumber = text(node, "LNO", "");
-        String deposit = text(node, "LS_GMY", "");
-        String rent = text(node, "RFE", "");
-        String amountFallback = deposit.isBlank() ? rent : "보증금 " + deposit + (rent.isBlank() ? "" : " / 월 " + rent);
-        String amountRaw = text(node, "SPL_XPC_AMT", amountFallback);
+        String amountRaw = expectedAmountRaw(node);
         String mapAddress = joinNonBlank(" ", address, lotNumber);
         return new RentalSupply(
-                text(node, "LND_US_DS_CD_NM", text(node, "SPL_INF_TP_NM", houseType)),
+                usage,
                 address,
                 lotNumber,
                 text(node, "AR", text(node, "DDO_AR", "")),
-                formatWon(amountRaw),
+                expectedAmount(node, amountRaw),
                 amountRaw,
-                houseType,
-                text(node, "NOW_HSH_CNT", text(node, "HSH_CNT", text(node, "SPL_HSH_CNT", ""))),
-                text(node, "SBSC_ACP_STTS_NM", "입찰신청전"),
+                text(node, "HTYPE", text(node, "HOUSE_TY_NM", text(node, "HTY_NNA", ""))),
+                text(node, "HSH_CNT", text(node, "SPL_HSH_CNT", text(node, "NOW_HSH_CNT", ""))),
+                text(node, "SBSC_ACP_STTS_NM", defaultApplyStatus(node)),
                 mapAddress,
                 naverMapUrl(mapAddress)
         );
@@ -184,6 +205,36 @@ public class LhOpenApiClient {
 
     private String blankToEmpty(String value) {
         return value == null ? "" : value;
+    }
+
+    private String expectedAmountRaw(JsonNode node) {
+        String landAmount = text(node, "SPL_XPC_AMT", "");
+        if (OpenApiUri.hasText(landAmount)) {
+            return landAmount;
+        }
+        String deposit = text(node, "LS_GMY", "");
+        String rent = text(node, "RFE", "");
+        if (OpenApiUri.hasText(deposit) && OpenApiUri.hasText(rent)) {
+            return "보증금 " + deposit + " / 월 " + rent;
+        }
+        if (OpenApiUri.hasText(deposit)) {
+            return "보증금 " + deposit;
+        }
+        return rent;
+    }
+
+    private String expectedAmount(JsonNode node, String amountRaw) {
+        if (OpenApiUri.hasText(text(node, "SPL_XPC_AMT", ""))) {
+            return formatWon(amountRaw);
+        }
+        return amountRaw;
+    }
+
+    private String defaultApplyStatus(JsonNode node) {
+        boolean landBidSupply = OpenApiUri.hasText(text(node, "SPL_XPC_AMT", ""))
+                || OpenApiUri.hasText(text(node, "LNO", ""))
+                || OpenApiUri.hasText(text(node, "LND_US_DS_CD_NM", ""));
+        return landBidSupply ? "입찰신청전" : "";
     }
 
     private String formatWon(String value) {

@@ -14,7 +14,9 @@ import com.happyhome.openapi.LhOpenApiClient;
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ public class NoticeLHService {
 
     private static final String JOB_NAME = "LH_NOTICE_SYNC";
     private static final String API_NAME = "LH_OPEN_API";
+    private static final int PAGE_SIZE = 100;
+    private static final DateTimeFormatter API_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     private final LhOpenApiClient lhOpenApiClient;
     private final RentalNoticeMapper rentalNoticeMapper;
@@ -38,44 +42,65 @@ public class NoticeLHService {
         List<String> errors = new ArrayList<>();
 
         try {
-            RentalSearchCondition condition = new RentalSearchCondition(
-                    "",
-                    "",
-                    "",
-                    1,
-                    100
-            );
+            if (!lhOpenApiClient.isConfigured()) {
+                errors.add("OPENAPI_DATA_SERVICE_KEY is not configured.");
+            } else {
+                String noticeStartDate = LocalDate.now().minusDays(1).format(API_DATE_FORMAT);
+                rentalNoticeMapper.deleteApiNoticesBefore(noticeStartDate);
 
-            List<RentalNotice> notices = lhOpenApiClient.notices(condition);
-            fetchedCount = notices.size();
-
-            for (RentalNotice notice : notices) {
-                try {
-                    rentalNoticeMapper.upsert(notice);
-                    savedCount++;
-
-                    RentalDetail detail = lhOpenApiClient.detail(notice);
-                    noticeLHBatchMapper.upsertDetail(
-                            NoticeLHDetail.from(notice.noticeId(), detail)
+                int page = 1;
+                while (true) {
+                    RentalSearchCondition condition = new RentalSearchCondition(
+                            "",
+                            "",
+                            "",
+                            page,
+                            PAGE_SIZE
                     );
-                    savedCount++;
 
-                    List<RentalSupply> supplies = lhOpenApiClient.supplies(notice);
-
-                    noticeLHBatchMapper.deleteSuppliesByNoticeId(notice.noticeId());
-
-                    for (RentalSupply supply : supplies) {
-                        noticeLHBatchMapper.insertSupply(
-                                NoticeLHSupply.from(notice.noticeId(), supply)
-                        );
-                        savedCount++;
+                    List<RentalNotice> notices = lhOpenApiClient.apiNotices(condition, noticeStartDate, "2099.12.31")
+                            .stream()
+                            .filter(notice -> isOnOrAfter(notice.noticeDate(), noticeStartDate))
+                            .toList();
+                    if (notices.isEmpty()) {
+                        break;
                     }
-                } catch (Exception e) {
-                    errors.add(notice.noticeId() + ": " + e.getMessage());
+
+                    fetchedCount += notices.size();
+                    for (RentalNotice notice : notices) {
+                        try {
+                            rentalNoticeMapper.upsert(notice);
+                            savedCount++;
+
+                            RentalDetail detail = lhOpenApiClient.detail(notice);
+                            noticeLHBatchMapper.upsertDetail(
+                                    NoticeLHDetail.from(notice.noticeId(), detail)
+                            );
+                            savedCount++;
+
+                            List<RentalSupply> supplies = lhOpenApiClient.supplies(notice);
+
+                            noticeLHBatchMapper.deleteSuppliesByNoticeId(notice.noticeId());
+
+                            for (RentalSupply supply : supplies) {
+                                noticeLHBatchMapper.insertSupply(
+                                        NoticeLHSupply.from(notice.noticeId(), supply)
+                                );
+                                savedCount++;
+                            }
+                        } catch (Exception e) {
+                            errors.add(notice.noticeId() + ": " + e.getMessage());
+                        }
+                    }
+
+                    if (notices.size() < PAGE_SIZE) {
+                        break;
+                    }
+                    page++;
                 }
             }
 
-            String status = errors.isEmpty() ? "SUCCESS" : "PARTIAL_FAILED";
+            String status = errors.isEmpty() ? "SUCCESS" : (fetchedCount == 0 ? "FAILED" : "PARTIAL_FAILED");
 
             saveLogQuietly(
                     status,
@@ -128,5 +153,9 @@ public class NoticeLHService {
             ));
         } catch (Exception ignored) {
         }
+    }
+
+    private boolean isOnOrAfter(String noticeDate, String cutoffDate) {
+        return noticeDate != null && noticeDate.compareTo(cutoffDate) >= 0;
     }
 }

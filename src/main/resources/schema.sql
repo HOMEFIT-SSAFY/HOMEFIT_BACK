@@ -189,7 +189,9 @@ CREATE TABLE IF NOT EXISTS loan_products (
     submitted_at VARCHAR(30),
     source VARCHAR(20) DEFAULT 'api',
     cached_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_loan_products_type_company (loan_type, company_name)
+    INDEX idx_loan_products_type_company (loan_type, company_name),
+    INDEX idx_loan_products_type_name_company (loan_type, product_name, company_name),
+    INDEX idx_loan_products_cached_at (cached_at)
 );
 
 CREATE TABLE IF NOT EXISTS loan_rate_options (
@@ -206,6 +208,9 @@ CREATE TABLE IF NOT EXISTS loan_rate_options (
     rate_avg DECIMAL(5, 2),
     cached_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_loan_rate_options_product (product_code),
+    INDEX idx_loan_rate_options_product_rates (product_code, rate_min, rate_max, rate_avg),
+    INDEX idx_loan_rate_options_rate_min_product (rate_min, product_code),
+    INDEX idx_loan_rate_options_types (rate_type_code, mortgage_type_code),
     CONSTRAINT fk_loan_rate_options_product
         FOREIGN KEY (product_code) REFERENCES loan_products(product_code)
         ON DELETE CASCADE
@@ -228,7 +233,8 @@ CREATE TABLE IF NOT EXISTS analysis_snapshot (
 CREATE TABLE IF NOT EXISTS bus_city_codes (
     city_code VARCHAR(5) PRIMARY KEY,
     city_name VARCHAR(80) NOT NULL,
-    synced_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    synced_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_bus_city_codes_name (city_name)
 );
 
 CREATE TABLE IF NOT EXISTS bus_stops (
@@ -241,7 +247,58 @@ CREATE TABLE IF NOT EXISTS bus_stops (
     synced_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_bus_stops_city (city_code),
     INDEX idx_bus_stops_lat_lng (latitude, longitude),
+    INDEX idx_bus_stops_lng_lat (longitude, latitude),
+    INDEX idx_bus_stops_city_name (city_code, node_name),
+    INDEX idx_bus_stops_node_name (node_name),
     CONSTRAINT fk_bus_stops_city
         FOREIGN KEY (city_code) REFERENCES bus_city_codes(city_code)
         ON DELETE CASCADE
 );
+
+DROP VIEW IF EXISTS v_bus_stops_with_city;
+
+CREATE VIEW v_bus_stops_with_city AS
+SELECT
+    bs.node_id,
+    bs.node_name,
+    bs.node_no,
+    bs.city_code,
+    bc.city_name,
+    bs.latitude,
+    bs.longitude,
+    bs.synced_at
+FROM bus_stops bs
+JOIN bus_city_codes bc ON bc.city_code = bs.city_code;
+
+DROP VIEW IF EXISTS v_loan_product_rate_options;
+
+CREATE VIEW v_loan_product_rate_options AS
+SELECT
+    lp.product_code,
+    lp.loan_type,
+    lp.company_code,
+    lp.company_name,
+    lp.product_name,
+    lp.join_way,
+    lp.loan_incidental_expense,
+    lp.early_repayment_fee,
+    lp.delinquency_rate,
+    lp.loan_limit,
+    lp.disclosure_start_day,
+    lp.disclosure_end_day,
+    lp.submitted_at,
+    lp.source,
+    lp.cached_at AS product_cached_at,
+    lro.rate_option_id,
+    lro.repayment_type_code,
+    lro.repayment_type_name,
+    lro.rate_type_code,
+    lro.rate_type_name,
+    lro.mortgage_type_code,
+    lro.mortgage_type_name,
+    lro.rate_min,
+    lro.rate_max,
+    lro.rate_avg,
+    lro.cached_at AS rate_cached_at
+FROM loan_products lp
+LEFT JOIN loan_rate_options lro ON lro.product_code = lp.product_code;

@@ -29,23 +29,38 @@ public class FinLifeLoanApiClient {
         this.restClient = RestClient.create();
     }
 
+    public boolean isConfigured() {
+        return properties != null && OpenApiUri.hasText(properties.getFinlife().getAuth());
+    }
+
     public List<LoanProduct> products(LoanType type, int page) {
-        if (properties == null || !OpenApiUri.hasText(properties.getFinlife().getAuth())) {
+        if (!isConfigured()) {
             return SampleLoanProducts.products(type);
+        }
+        try {
+            List<LoanProduct> products = productPage(type, page).products();
+            return products.isEmpty() ? SampleLoanProducts.products(type) : products;
+        } catch (Exception e) {
+            return SampleLoanProducts.products(type);
+        }
+    }
+
+    public LoanProductPage productPage(LoanType type, int page) {
+        if (!isConfigured()) {
+            return new LoanProductPage(List.of(), 0);
         }
         try {
             String body = restClient.get()
                     .uri(OpenApiUri.build(url(type), Map.of(
                             "auth", properties.getFinlife().getAuth(),
                             "topFinGrpNo", BANK_GROUP_CODE,
-                            "pageNo", page
+                            "pageNo", Math.max(page, 1)
                     )))
                     .retrieve()
                     .body(String.class);
-            List<LoanProduct> products = parse(type, body);
-            return products.isEmpty() ? SampleLoanProducts.products(type) : products;
+            return parse(type, body);
         } catch (Exception e) {
-            return SampleLoanProducts.products(type);
+            return new LoanProductPage(List.of(), 0);
         }
     }
 
@@ -55,7 +70,7 @@ public class FinLifeLoanApiClient {
                 : properties.getFinlife().getMortgageLoanUrl();
     }
 
-    private List<LoanProduct> parse(LoanType type, String body) throws Exception {
+    private LoanProductPage parse(LoanType type, String body) throws Exception {
         JsonNode result = objectMapper.readTree(body).path("result");
         Map<String, ProductBuilder> products = new LinkedHashMap<>();
         for (JsonNode node : result.path("baseList")) {
@@ -70,7 +85,13 @@ public class FinLifeLoanApiClient {
                 builder.options.add(option(type, node, index++));
             }
         }
-        return products.values().stream().map(ProductBuilder::build).toList();
+        return new LoanProductPage(
+                products.values().stream().map(ProductBuilder::build).toList(),
+                result.path("max_page_no").asInt(1)
+        );
+    }
+
+    public record LoanProductPage(List<LoanProduct> products, int maxPageNo) {
     }
 
     private LoanRateOption option(LoanType type, JsonNode node, int index) {
