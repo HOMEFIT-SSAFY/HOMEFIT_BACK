@@ -68,6 +68,17 @@ CREATE TABLE IF NOT EXISTS favorite_deals (
     PRIMARY KEY (user_id, deal_no)
 );
 
+CREATE TABLE IF NOT EXISTS favorite_rental_notices (
+    user_id VARCHAR(50) NOT NULL,
+    notice_id VARCHAR(40) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, notice_id),
+    INDEX idx_favorite_rental_notices_notice (notice_id),
+    CONSTRAINT fk_favorite_rental_notices_member
+        FOREIGN KEY (user_id) REFERENCES members(user_id)
+        ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS notices (
     notice_id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(200) NOT NULL,
@@ -189,6 +200,21 @@ CREATE TABLE IF NOT EXISTS lh_notice_supplies (
     cached_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_lh_notice_supplies_notice
         FOREIGN KEY (notice_id) REFERENCES rental_notice_cache(notice_id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS rental_notice_email_logs (
+    email_log_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(50) NOT NULL,
+    notice_id VARCHAR(40) NOT NULL,
+    event_type VARCHAR(40) NOT NULL,
+    recipient_email VARCHAR(255) NOT NULL,
+    subject VARCHAR(300) NOT NULL,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uk_rental_notice_email_event UNIQUE (user_id, notice_id, event_type),
+    INDEX idx_rental_notice_email_logs_sent_at (sent_at),
+    CONSTRAINT fk_rental_notice_email_logs_member
+        FOREIGN KEY (user_id) REFERENCES members(user_id)
         ON DELETE CASCADE
 );
 

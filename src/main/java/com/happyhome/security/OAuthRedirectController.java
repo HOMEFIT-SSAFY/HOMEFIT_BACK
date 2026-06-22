@@ -3,6 +3,7 @@ package com.happyhome.security;
 import jakarta.servlet.http.HttpSession;
 import java.net.URI;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,14 @@ public class OAuthRedirectController {
     static final String REDIRECT_SESSION_KEY = "happyhome.oauth.redirect";
 
     private final ObjectProvider<ClientRegistrationRepository> registrations;
+    private final URI frontendOrigin;
 
-    public OAuthRedirectController(ObjectProvider<ClientRegistrationRepository> registrations) {
+    public OAuthRedirectController(
+            ObjectProvider<ClientRegistrationRepository> registrations,
+            @Value("${happyhome.frontend.origin}") String frontendOrigin
+    ) {
         this.registrations = registrations;
+        this.frontendOrigin = URI.create(frontendOrigin);
     }
 
     @GetMapping("/redirect/{provider}")
@@ -70,10 +76,21 @@ public class OAuthRedirectController {
                     && (port == 8080 || port == 5173)) {
                 return uri.toString();
             }
+            if (isConfiguredFrontend(uri)) {
+                return uri.toString();
+            }
         } catch (IllegalArgumentException ignored) {
             return "/home";
         }
         return "/home";
+    }
+
+    private boolean isConfiguredFrontend(URI uri) {
+        return uri.getScheme() != null
+                && uri.getHost() != null
+                && uri.getScheme().equals(frontendOrigin.getScheme())
+                && uri.getHost().equals(frontendOrigin.getHost())
+                && uri.getPort() == frontendOrigin.getPort();
     }
 
     private String oauthSetupLocation(String provider, String redirect) {

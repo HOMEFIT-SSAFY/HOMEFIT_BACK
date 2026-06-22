@@ -53,8 +53,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         session.setAttribute("loginMember", member);
         saveSecurityContext(session, member);
 
+        String redirect = (String) session.getAttribute(OAuthRedirectController.REDIRECT_SESSION_KEY);
         session.removeAttribute(OAuthRedirectController.REDIRECT_SESSION_KEY);
-        response.sendRedirect("/home");
+        response.sendRedirect(redirect == null || redirect.isBlank() ? "/home" : redirect);
     }
 
     private void saveSecurityContext(HttpSession session, MemberDto member) {

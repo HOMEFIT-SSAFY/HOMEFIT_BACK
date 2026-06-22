@@ -5,9 +5,11 @@ import com.happyhome.security.OAuth2LoginSuccessHandler;
 import com.happyhome.security.JwtAuthenticationFilter;
 import com.happyhome.security.JwtProvider;
 import com.happyhome.security.ProviderCompatibleAuthorizationRequestResolver;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,6 +23,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class SecurityConfig {
@@ -36,6 +41,8 @@ public class SecurityConfig {
     )
             throws Exception {
         http
+                .cors(cors -> {
+                })
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/bus-stops/sync").hasRole("ADMIN")
@@ -46,6 +53,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/members/me").authenticated()
                         .requestMatchers("/api/members/me/**").authenticated()
                         .requestMatchers("/api/favorites/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/rentals/favorites").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/rentals/favorites/emails/send").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/rentals/*/favorite/toggle").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/rentals/recommendations").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/loans/property-analysis").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/transfers/favorites").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/transfers/*/favorite/toggle").authenticated()
@@ -109,6 +120,26 @@ public class SecurityConfig {
         DelegatingPasswordEncoder passwordEncoder = new DelegatingPasswordEncoder("bcrypt", encoders);
         passwordEncoder.setDefaultPasswordEncoderForMatches(legacyPlainTextPasswordEncoder());
         return passwordEncoder;
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource(
+            @Value("${happyhome.frontend.allowed-origins}") String allowedOrigins
+    ) {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.stream(allowedOrigins.split(","))
+                .map(String::trim)
+                .filter(origin -> !origin.isBlank())
+                .toList());
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/**", configuration);
+        source.registerCorsConfiguration("/oauth2/**", configuration);
+        source.registerCorsConfiguration("/login/oauth2/**", configuration);
+        return source;
     }
 
     private PasswordEncoder legacyPlainTextPasswordEncoder() {
