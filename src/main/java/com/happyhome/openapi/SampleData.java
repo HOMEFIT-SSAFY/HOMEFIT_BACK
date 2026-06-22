@@ -22,9 +22,37 @@ public final class SampleData {
 
     public static List<RentalSupply> supplies() {
         return List.of(
-                new RentalSupply("청년 1형", "서울 관악구 봉천동", "26㎡", "보증금 200만원 / 월 18만원", "원룸형", "18"),
-                new RentalSupply("신혼부부형", "서울 관악구 신림동", "30㎡", "보증금 300만원 / 월 21만원", "투룸형", "12")
+                new RentalSupply(
+                        "청년 1형",
+                        "서울 관악구 봉천동",
+                        "",
+                        "26㎡",
+                        "보증금 200만원 / 월 18만원",
+                        "",
+                        "원룸형",
+                        "18",
+                        "",
+                        "서울 관악구 봉천동",
+                        mapUrl("서울 관악구 봉천동")
+                ),
+                new RentalSupply(
+                        "신혼부부형",
+                        "서울 관악구 신림동",
+                        "",
+                        "30㎡",
+                        "보증금 300만원 / 월 21만원",
+                        "",
+                        "투룸형",
+                        "12",
+                        "",
+                        "서울 관악구 신림동",
+                        mapUrl("서울 관악구 신림동")
+                )
         );
+    }
+
+    private static String mapUrl(String address) {
+        return "https://map.naver.com/v5/search/" + java.net.URLEncoder.encode(address, java.nio.charset.StandardCharsets.UTF_8);
     }
 
     public static RentalDetail detail() {

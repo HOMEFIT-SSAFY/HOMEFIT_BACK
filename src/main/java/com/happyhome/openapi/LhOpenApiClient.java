@@ -6,13 +6,21 @@ import com.happyhome.rental.dto.RentalDetail;
 import com.happyhome.rental.dto.RentalNotice;
 import com.happyhome.rental.dto.RentalSearchCondition;
 import com.happyhome.rental.dto.RentalSupply;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 @Component
 public class LhOpenApiClient {
+
+    private static final Logger log = LoggerFactory.getLogger(LhOpenApiClient.class);
 
     private final OpenApiProperties properties;
     private final OpenApiJsonParser parser;
@@ -51,49 +59,53 @@ public class LhOpenApiClient {
 
     public List<RentalSupply> supplies(RentalNotice notice) {
         if (!OpenApiUri.hasText(properties.getData().getServiceKey())) {
-            throw new IllegalStateException("怨듦났?곗씠???쒕퉬???ㅺ? ?놁뒿?덈떎.");
+            log.warn("OPENAPI_DATA_SERVICE_KEY is not configured; LH supply API was not called.");
+            return List.of();
         }
-
         if ("sample".equals(notice.source())) {
             return List.of();
         }
-
         try {
             String body = restClient.get()
-                    .uri(OpenApiUri.build(
-                            properties.getLh().getSupplyUrl(),
-                            detailParams(notice)
-                    ))
+                    .uri(OpenApiUri.build(properties.getLh().getSupplyUrl(), detailParams(notice)))
                     .retrieve()
                     .body(String.class);
-
-            List<RentalSupply> supplies = parser.items(body)
-                    .stream()
-                    .map(this::supply)
-                    .toList();
-
+            List<RentalSupply> supplies = parser.items(body).stream().map(this::supply).toList();
+            if (supplies.isEmpty()) {
+                log.warn("LH supply API returned no items for notice {}", notice.noticeId());
+            }
             return supplies;
         } catch (Exception e) {
-            throw new IllegalStateException(
-                    "LH 怨듦툒?뺣낫 議고쉶 ?ㅽ뙣: noticeId=" + notice.noticeId(),
-                    e
-            );
+            log.warn("LH supply API failed for notice {}: {}", notice.noticeId(), e.getMessage());
+            return List.of();
         }
     }
 
     public RentalDetail detail(RentalNotice notice) {
-        if (!OpenApiUri.hasText(properties.getData().getServiceKey()) || "sample".equals(notice.source())) {
-            return SampleData.detail();
+        if (!OpenApiUri.hasText(properties.getData().getServiceKey())) {
+            log.warn("OPENAPI_DATA_SERVICE_KEY is not configured; LH detail API was not called.");
+            return emptyDetail();
+        }
+        if ("sample".equals(notice.source())) {
+            return emptyDetail();
         }
         try {
             String body = restClient.get()
                     .uri(OpenApiUri.build(properties.getLh().getDetailUrl(), detailParams(notice)))
                     .retrieve()
                     .body(String.class);
-            return parser.items(body).stream().findFirst().map(this::detail).orElseGet(SampleData::detail);
+            return parser.items(body).stream().findFirst().map(this::detail).orElseGet(() -> {
+                log.warn("LH detail API returned no items for notice {}", notice.noticeId());
+                return emptyDetail();
+            });
         } catch (Exception e) {
-            return SampleData.detail();
+            log.warn("LH detail API failed for notice {}: {}", notice.noticeId(), e.getMessage());
+            return emptyDetail();
         }
+    }
+
+    private RentalDetail emptyDetail() {
+        return new RentalDetail("", "", "", "", "");
     }
 
     private Map<String, ?> detailParams(RentalNotice notice) {
@@ -128,24 +140,29 @@ public class LhOpenApiClient {
     }
 
     private RentalSupply supply(JsonNode node) {
-        String houseType = text(node, "HTY_NNA", text(node, "HTYPE", text(node, "HOUSE_TY_NM", "")));
-        String deposit = text(node, "LS_GMY", "");
-        String rent = text(node, "RFE", "");
-        String expectedAmount = deposit.isBlank() ? rent : "보증금 " + deposit + (rent.isBlank() ? "" : " / 월 " + rent);
+        String address = text(node, "LGDN_DTL_ADR", text(node, "ADDR", ""));
+        String lotNumber = text(node, "LNO", "");
+        String amountRaw = text(node, "SPL_XPC_AMT", text(node, "RFE", ""));
+        String mapAddress = joinNonBlank(" ", address, lotNumber);
         return new RentalSupply(
-                text(node, "LND_US_DS_CD_NM", text(node, "SPL_INF_TP_NM", houseType)),
-                text(node, "LGDN_DTL_ADR", text(node, "ADDR", text(node, "SBD_LGO_NM", ""))),
+                text(node, "LND_US_DS_CD_NM", text(node, "SPL_INF_TP_NM", "공급유형")),
+                address,
+                lotNumber,
                 text(node, "AR", text(node, "DDO_AR", "")),
-                text(node, "SPL_XPC_AMT", expectedAmount),
-                houseType,
-                text(node, "NOW_HSH_CNT", text(node, "HSH_CNT", text(node, "SPL_HSH_CNT", "")))
+                formatWon(amountRaw),
+                amountRaw,
+                text(node, "HTYPE", text(node, "HOUSE_TY_NM", "")),
+                text(node, "HSH_CNT", text(node, "SPL_HSH_CNT", "")),
+                text(node, "SBSC_ACP_STTS_NM", "입찰신청전"),
+                mapAddress,
+                naverMapUrl(mapAddress)
         );
     }
 
     private RentalDetail detail(JsonNode node) {
         return new RentalDetail(
-                text(node, "CTRT_PLC_ADR", text(node, "LGDN_ADR", "")),
-                text(node, "CTRT_PLC_DTL_ADR", text(node, "LGDN_DTL_ADR", "")),
+                text(node, "CTRT_PLC_ADR", ""),
+                text(node, "CTRT_PLC_DTL_ADR", ""),
                 text(node, "SBSC_ACP_ST_DT", ""),
                 text(node, "SBSC_ACP_CLSG_DT", ""),
                 text(node, "SIL_OFC_TLNO", "1600-1004")
@@ -163,5 +180,31 @@ public class LhOpenApiClient {
 
     private String blankToEmpty(String value) {
         return value == null ? "" : value;
+    }
+
+    private String formatWon(String value) {
+        if (!OpenApiUri.hasText(value)) {
+            return "";
+        }
+        try {
+            return NumberFormat.getNumberInstance(Locale.KOREA).format(Long.parseLong(value.replace(",", "").trim()));
+        } catch (NumberFormatException e) {
+            return value;
+        }
+    }
+
+    private String naverMapUrl(String address) {
+        if (!OpenApiUri.hasText(address)) {
+            return "";
+        }
+        return "https://map.naver.com/v5/search/" + URLEncoder.encode(address, StandardCharsets.UTF_8);
+    }
+
+    private String joinNonBlank(String delimiter, String... values) {
+        return java.util.Arrays.stream(values)
+                .filter(OpenApiUri::hasText)
+                .map(String::trim)
+                .reduce((left, right) -> left + delimiter + right)
+                .orElse("");
     }
 }

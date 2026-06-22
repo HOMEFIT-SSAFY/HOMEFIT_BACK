@@ -5,12 +5,16 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.PkceParameterNames;
+import org.springframework.stereotype.Component;
 
+@Component
+@ConditionalOnBean(ClientRegistrationRepository.class)
 public class ProviderCompatibleAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
     private static final String AUTHORIZATION_BASE_URI = "/oauth2/authorization";
