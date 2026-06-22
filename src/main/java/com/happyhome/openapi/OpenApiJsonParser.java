@@ -2,6 +2,7 @@ package com.happyhome.openapi;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +21,15 @@ public class OpenApiJsonParser {
     }
 
     private JsonNode itemNode(JsonNode root) {
+        JsonNode mergedDetailNode = mergedLhDetailNode(root);
+        if (mergedDetailNode != null) {
+            return mergedDetailNode;
+        }
+
         JsonNode node = firstExisting(
                 root.path("dsList"),
+                root.path("dsList01"),
+                root.path("dsList02"),
                 root.path("response").path("data"),
                 root.path("response").path("body").path("items").path("item"),
                 root.path("body").path("items"),
@@ -39,6 +47,28 @@ public class OpenApiJsonParser {
             }
         }
         return null;
+    }
+
+    private JsonNode mergedLhDetailNode(JsonNode root) {
+        if (!root.isArray()) {
+            return null;
+        }
+        ObjectNode merged = objectMapper.createObjectNode();
+        mergeFirstObject(root, merged, "dsSplScdl");
+        mergeFirstObject(root, merged, "dsSbd");
+        mergeFirstObject(root, merged, "dsEtcInfo");
+        return merged.isEmpty() ? null : merged;
+    }
+
+    private void mergeFirstObject(JsonNode root, ObjectNode merged, String fieldName) {
+        for (JsonNode child : root) {
+            JsonNode node = child.path(fieldName);
+            if (node.isArray() && !node.isEmpty() && node.get(0).isObject()) {
+                merged.setAll((ObjectNode) node.get(0));
+            } else if (node.isObject()) {
+                merged.setAll((ObjectNode) node);
+            }
+        }
     }
 
     private JsonNode firstExisting(JsonNode... nodes) {
@@ -65,4 +95,3 @@ public class OpenApiJsonParser {
         return List.of();
     }
 }
-

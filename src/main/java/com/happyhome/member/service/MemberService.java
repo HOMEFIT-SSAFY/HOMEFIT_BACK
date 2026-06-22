@@ -5,6 +5,7 @@ import com.happyhome.member.dto.MemberDto;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,6 +15,7 @@ public class MemberService {
 
     private final MemberDao memberDao;
     private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder rawBcryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public MemberService(MemberDao memberDao, PasswordEncoder passwordEncoder) {
         this.memberDao = memberDao;
@@ -94,10 +96,19 @@ public class MemberService {
         if (!StringUtils.hasText(storedPassword)) {
             return false;
         }
+        if (isRawBcryptHash(storedPassword)) {
+            return rawBcryptPasswordEncoder.matches(rawPassword, storedPassword);
+        }
         if (!storedPassword.startsWith("{")) {
             return storedPassword.equals(rawPassword);
         }
         return passwordEncoder.matches(rawPassword, storedPassword);
+    }
+
+    private boolean isRawBcryptHash(String storedPassword) {
+        return storedPassword.startsWith("$2a$")
+                || storedPassword.startsWith("$2b$")
+                || storedPassword.startsWith("$2y$");
     }
 
     private String oauthUserId(String provider, String providerUserId, String email) {

@@ -1,5 +1,6 @@
 package com.happyhome.config;
 
+import com.happyhome.security.ProviderCompatibleAuthorizationRequestResolver;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,13 @@ public class OAuthClientRegistrationConfig {
         addIfPresent(registrations, naver(naverClientId, naverClientSecret));
         addIfPresent(registrations, google(googleClientId, googleClientSecret));
         return new InMemoryClientRegistrationRepository(registrations);
+    }
+
+    @Bean
+    ProviderCompatibleAuthorizationRequestResolver providerCompatibleAuthorizationRequestResolver(
+            ClientRegistrationRepository registrations
+    ) {
+        return new ProviderCompatibleAuthorizationRequestResolver(registrations);
     }
 
     private void addIfPresent(List<ClientRegistration> registrations, ClientRegistration registration) {

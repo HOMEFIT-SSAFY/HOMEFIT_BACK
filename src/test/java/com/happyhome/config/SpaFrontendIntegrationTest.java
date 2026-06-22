@@ -1,6 +1,8 @@
 package com.happyhome.config;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -10,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest(properties = {
@@ -38,5 +41,24 @@ class SpaFrontendIntegrationTest {
         mockMvc.perform(get(path))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?oauthError"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/api/notices", "/api/admin/batch/lh-notices", "/api/bus-stops/sync"})
+    void rejectsAnonymousWriteEndpoints(String path) throws Exception {
+        mockMvc.perform(post(path)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"Notice\",\"content\":\"Body\"}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/api/notices", "/api/admin/batch/lh-notices", "/api/bus-stops/sync"})
+    void rejectsNonAdminWriteEndpoints(String path) throws Exception {
+        mockMvc.perform(post(path)
+                        .with(user("ssafy").roles("USER"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"Notice\",\"content\":\"Body\"}"))
+                .andExpect(status().isForbidden());
     }
 }

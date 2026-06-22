@@ -1,6 +1,7 @@
 package com.happyhome.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.happyhome.transfer.dto.TransferDto;
 import com.happyhome.transfer.dto.TransferRequest;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
 
 @SpringBootTest(properties = {
         "spring.datasource.url=jdbc:h2:mem:happyhome-transfer-test;MODE=MySQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE",
@@ -44,9 +46,13 @@ class TransferServiceTest {
         TransferDto detail = transferService.findById(created.getTransferId(), true).orElseThrow();
         assertThat(detail.getViewCount()).isEqualTo(1);
 
+        TransferRequest forbiddenUpdate = request("Forbidden room transfer", "done");
+        assertThatThrownBy(() -> transferService.update(created.getTransferId(), forbiddenUpdate, "other"))
+                .isInstanceOf(AccessDeniedException.class);
+
         TransferRequest update = request("Updated room transfer", "done");
         update.getImageUrls().add("https://example.com/updated.jpg");
-        TransferDto updated = transferService.update(created.getTransferId(), update, "other").orElseThrow();
+        TransferDto updated = transferService.update(created.getTransferId(), update, "ssafy").orElseThrow();
 
         assertThat(updated.getTitle()).isEqualTo("Updated room transfer");
         assertThat(updated.getWriterId()).isEqualTo("ssafy");

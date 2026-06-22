@@ -10,9 +10,7 @@ import org.springframework.security.oauth2.client.web.DefaultOAuth2Authorization
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.PkceParameterNames;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ProviderCompatibleAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
     private static final String AUTHORIZATION_BASE_URI = "/oauth2/authorization";

@@ -7,16 +7,15 @@ import com.happyhome.loan.dto.LoanType;
 import com.happyhome.loan.dto.PropertyLoanAnalysisRequest;
 import com.happyhome.loan.dto.PropertyLoanAnalysisResult;
 import com.happyhome.house.service.HouseDealService;
-import com.happyhome.member.dto.MemberDto;
 import com.happyhome.member.service.FinancialProfileService;
 import com.happyhome.loan.service.LoanCalculator;
 import com.happyhome.loan.service.LoanProductService;
 import com.happyhome.loan.service.PropertyLoanAnalysisService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,13 +68,12 @@ public class LoanRestController {
     @PostMapping("/property-analysis")
     public ResponseEntity<PropertyLoanAnalysisResult> propertyAnalysis(
             @Valid @RequestBody PropertyLoanAnalysisRequest request,
-            HttpSession session
+            Authentication authentication
     ) {
-        MemberDto member = (MemberDto) session.getAttribute("loginMember");
-        if (member == null) {
+        if (authentication == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return financialProfileService.findByUserId(member.getUserId())
+        return financialProfileService.findByUserId(authentication.getName())
                 .flatMap(profile -> houseDealService.findByNo(request.dealNo())
                         .map(deal -> propertyLoanAnalysisService.analyze(deal, profile, request)))
                 .map(ResponseEntity::ok)

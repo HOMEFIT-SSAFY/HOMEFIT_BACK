@@ -100,6 +100,19 @@ class MemberServiceTest {
         assertThat(passwordEncoder.matches("plain-password", memberDao.saved.get("ssafy").getPassword())).isTrue();
     }
 
+    @Test
+    void authenticateAcceptsRawBcryptHashWithoutDelegatingPrefix() {
+        FakeMemberDao memberDao = new FakeMemberDao();
+        String rawBcryptHash = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder()
+                .encode("plain-password");
+        memberDao.saved.put("ssafy", member("ssafy", rawBcryptHash));
+        MemberService memberService = new MemberService(memberDao, passwordEncoder);
+
+        Optional<MemberDto> authenticated = memberService.authenticate("ssafy", "plain-password");
+
+        assertThat(authenticated).isPresent();
+    }
+
     private static MemberDto member(String userId, String password) {
         MemberDto member = new MemberDto();
         member.setUserId(userId);

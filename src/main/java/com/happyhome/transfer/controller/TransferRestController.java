@@ -1,15 +1,14 @@
 package com.happyhome.transfer.controller;
 
-import com.happyhome.member.dto.MemberDto;
 import com.happyhome.transfer.dto.TransferDto;
 import com.happyhome.transfer.dto.TransferRequest;
 import com.happyhome.transfer.dto.TransferSearchCondition;
 import com.happyhome.transfer.service.TransferService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,7 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/transfers")
-@Tag(name = "Transfers", description = "양도 게시판 API")
+@Tag(name = "Transfers", description = "Transfer post API")
 public class TransferRestController {
 
     private final TransferService transferService;
@@ -32,42 +31,49 @@ public class TransferRestController {
         this.transferService = transferService;
     }
 
-    @Operation(summary = "양도글 목록")
+    @Operation(summary = "List transfer posts")
     @GetMapping
     public List<TransferDto> transfers(@ModelAttribute TransferSearchCondition condition) {
         return transferService.findAll(condition);
     }
 
-    @Operation(summary = "양도글 상세")
+    @Operation(summary = "Get transfer post")
     @GetMapping("/{transferId}")
     public TransferDto transfer(@PathVariable int transferId) {
         return transferService.findById(transferId, true)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "양도글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transfer post not found."));
     }
 
-    @Operation(summary = "양도글 작성")
+    @Operation(summary = "Create transfer post")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TransferDto create(@ModelAttribute TransferRequest request, HttpSession session) {
-        return transferService.create(request, resolveWriterId(session));
+    public TransferDto create(@ModelAttribute TransferRequest request, Authentication authentication) {
+        return transferService.create(request, resolveWriterId(authentication));
     }
 
-    @Operation(summary = "양도글 수정")
+    @Operation(summary = "Update transfer post")
     @PutMapping("/{transferId}")
-    public TransferDto update(@PathVariable int transferId, @ModelAttribute TransferRequest request, HttpSession session) {
-        return transferService.update(transferId, request, resolveWriterId(session))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "양도글을 찾을 수 없습니다."));
+    public TransferDto update(
+            @PathVariable int transferId,
+            @ModelAttribute TransferRequest request,
+            Authentication authentication
+    ) {
+        return transferService.update(transferId, request, resolveWriterId(authentication))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transfer post not found."));
     }
 
-    @Operation(summary = "양도글 삭제")
+    @Operation(summary = "Delete transfer post")
     @DeleteMapping("/{transferId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int transferId) {
-        transferService.delete(transferId);
+    public void delete(@PathVariable int transferId, Authentication authentication) {
+        transferService.delete(transferId, resolveWriterId(authentication))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transfer post not found."));
     }
 
-    private String resolveWriterId(HttpSession session) {
-        MemberDto member = (MemberDto) session.getAttribute("loginMember");
-        return member == null ? "api" : member.getUserId();
+    private String resolveWriterId(Authentication authentication) {
+        if (authentication == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication required.");
+        }
+        return authentication.getName();
     }
 }

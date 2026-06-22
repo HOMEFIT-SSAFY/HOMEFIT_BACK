@@ -5,7 +5,7 @@ public record BusStop(
         String nodeName,
         String nodeNo,
         String cityCode,
-        double latitude,
-        double longitude
+        Double latitude,
+        Double longitude
 ) {
 }

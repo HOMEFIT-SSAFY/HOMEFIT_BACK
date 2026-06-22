@@ -55,19 +55,21 @@
                 latitude,
                 longitude,
                 (
-                    6371000 * ACOS(
-                        COS(RADIANS(#{latitude}))
-                        * COS(RADIANS(latitude))
-                        * COS(RADIANS(longitude) - RADIANS(#{longitude}))
-                        + SIN(RADIANS(#{latitude}))
-                        * SIN(RADIANS(latitude))
+                    CAST(6371000.0 AS DOUBLE) * ACOS(
+                        LEAST(CAST(1.0 AS DOUBLE), GREATEST(CAST(-1.0 AS DOUBLE),
+                            COS(RADIANS(CAST(#{latitude} AS DOUBLE)))
+                            * COS(RADIANS(CAST(latitude AS DOUBLE)))
+                            * COS(RADIANS(CAST(longitude AS DOUBLE)) - RADIANS(CAST(#{longitude} AS DOUBLE)))
+                            + SIN(RADIANS(CAST(#{latitude} AS DOUBLE)))
+                            * SIN(RADIANS(CAST(latitude AS DOUBLE)))
+                        ))
                     )
                 ) AS distance_m
             FROM bus_stops
-            WHERE latitude BETWEEN #{latitude} - (#{radiusMeters} / 111320.0)
-                AND #{latitude} + (#{radiusMeters} / 111320.0)
-              AND longitude BETWEEN #{longitude} - (#{radiusMeters} / (111320.0 * COS(RADIANS(#{latitude}))))
-                AND #{longitude} + (#{radiusMeters} / (111320.0 * COS(RADIANS(#{latitude}))))
+            WHERE latitude BETWEEN CAST(#{latitude} AS DOUBLE) - (CAST(#{radiusMeters} AS DOUBLE) / CAST(111320.0 AS DOUBLE))
+                AND CAST(#{latitude} AS DOUBLE) + (CAST(#{radiusMeters} AS DOUBLE) / CAST(111320.0 AS DOUBLE))
+              AND longitude BETWEEN CAST(#{longitude} AS DOUBLE) - (CAST(#{radiusMeters} AS DOUBLE) / (CAST(111320.0 AS DOUBLE) * COS(RADIANS(CAST(#{latitude} AS DOUBLE)))))
+                AND CAST(#{longitude} AS DOUBLE) + (CAST(#{radiusMeters} AS DOUBLE) / (CAST(111320.0 AS DOUBLE) * COS(RADIANS(CAST(#{latitude} AS DOUBLE)))))
         ) nearby
         WHERE distance_m &lt;= #{radiusMeters}
         ORDER BY distance_m ASC

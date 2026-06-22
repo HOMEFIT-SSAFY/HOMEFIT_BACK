@@ -50,18 +50,34 @@ public class LhOpenApiClient {
     }
 
     public List<RentalSupply> supplies(RentalNotice notice) {
-        if (!OpenApiUri.hasText(properties.getData().getServiceKey()) || "sample".equals(notice.source())) {
-            return SampleData.supplies();
+        if (!OpenApiUri.hasText(properties.getData().getServiceKey())) {
+            throw new IllegalStateException("怨듦났?곗씠???쒕퉬???ㅺ? ?놁뒿?덈떎.");
         }
+
+        if ("sample".equals(notice.source())) {
+            return List.of();
+        }
+
         try {
             String body = restClient.get()
-                    .uri(OpenApiUri.build(properties.getLh().getSupplyUrl(), detailParams(notice)))
+                    .uri(OpenApiUri.build(
+                            properties.getLh().getSupplyUrl(),
+                            detailParams(notice)
+                    ))
                     .retrieve()
                     .body(String.class);
-            List<RentalSupply> supplies = parser.items(body).stream().map(this::supply).toList();
-            return supplies.isEmpty() ? SampleData.supplies() : supplies;
+
+            List<RentalSupply> supplies = parser.items(body)
+                    .stream()
+                    .map(this::supply)
+                    .toList();
+
+            return supplies;
         } catch (Exception e) {
-            return SampleData.supplies();
+            throw new IllegalStateException(
+                    "LH 怨듦툒?뺣낫 議고쉶 ?ㅽ뙣: noticeId=" + notice.noticeId(),
+                    e
+            );
         }
     }
 
@@ -112,20 +128,24 @@ public class LhOpenApiClient {
     }
 
     private RentalSupply supply(JsonNode node) {
+        String houseType = text(node, "HTY_NNA", text(node, "HTYPE", text(node, "HOUSE_TY_NM", "")));
+        String deposit = text(node, "LS_GMY", "");
+        String rent = text(node, "RFE", "");
+        String expectedAmount = deposit.isBlank() ? rent : "보증금 " + deposit + (rent.isBlank() ? "" : " / 월 " + rent);
         return new RentalSupply(
-                text(node, "LND_US_DS_CD_NM", text(node, "SPL_INF_TP_NM", "공급유형")),
-                text(node, "LGDN_DTL_ADR", text(node, "ADDR", "")),
+                text(node, "LND_US_DS_CD_NM", text(node, "SPL_INF_TP_NM", houseType)),
+                text(node, "LGDN_DTL_ADR", text(node, "ADDR", text(node, "SBD_LGO_NM", ""))),
                 text(node, "AR", text(node, "DDO_AR", "")),
-                text(node, "SPL_XPC_AMT", text(node, "RFE", "")),
-                text(node, "HTYPE", text(node, "HOUSE_TY_NM", "")),
-                text(node, "HSH_CNT", text(node, "SPL_HSH_CNT", ""))
+                text(node, "SPL_XPC_AMT", expectedAmount),
+                houseType,
+                text(node, "NOW_HSH_CNT", text(node, "HSH_CNT", text(node, "SPL_HSH_CNT", "")))
         );
     }
 
     private RentalDetail detail(JsonNode node) {
         return new RentalDetail(
-                text(node, "CTRT_PLC_ADR", ""),
-                text(node, "CTRT_PLC_DTL_ADR", ""),
+                text(node, "CTRT_PLC_ADR", text(node, "LGDN_ADR", "")),
+                text(node, "CTRT_PLC_DTL_ADR", text(node, "LGDN_DTL_ADR", "")),
                 text(node, "SBSC_ACP_ST_DT", ""),
                 text(node, "SBSC_ACP_CLSG_DT", ""),
                 text(node, "SIL_OFC_TLNO", "1600-1004")

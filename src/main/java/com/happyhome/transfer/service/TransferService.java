@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,13 +44,16 @@ public class TransferService {
         return transferDao.findById(transferId);
     }
 
+    @Transactional
     public TransferDto create(TransferRequest request, String writerId) {
         TransferDto transfer = toTransfer(new TransferDto(), request, writerId);
         return transferDao.save(transfer);
     }
 
+    @Transactional
     public Optional<TransferDto> update(int transferId, TransferRequest request, String writerId) {
         return transferDao.findById(transferId).map(existing -> {
+            assertWriter(existing, writerId);
             TransferDto transfer = toTransfer(existing, request, writerId);
             transfer.setTransferId(transferId);
             transferDao.update(transfer);
@@ -56,8 +61,18 @@ public class TransferService {
         });
     }
 
+    @Transactional
     public void delete(int transferId) {
         transferDao.deleteById(transferId);
+    }
+
+    @Transactional
+    public Optional<TransferDto> delete(int transferId, String writerId) {
+        return transferDao.findById(transferId).map(existing -> {
+            assertWriter(existing, writerId);
+            transferDao.deleteById(transferId);
+            return existing;
+        });
     }
 
     private TransferDto toTransfer(TransferDto transfer, TransferRequest request, String writerId) {
@@ -136,5 +151,11 @@ public class TransferService {
 
     private String trimToNull(String value) {
         return StringUtils.hasText(value) ? value.trim() : null;
+    }
+
+    private void assertWriter(TransferDto transfer, String writerId) {
+        if (!StringUtils.hasText(writerId) || !writerId.equals(transfer.getWriterId())) {
+            throw new AccessDeniedException("Only the writer can modify this transfer.");
+        }
     }
 }

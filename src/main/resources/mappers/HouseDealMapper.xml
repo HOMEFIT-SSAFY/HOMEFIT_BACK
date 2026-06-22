@@ -58,7 +58,7 @@
         <include refid="selectClause"/>
         <choose>
             <when test="keyword == null or keyword.trim() == ''">
-                FROM housedeals d FORCE INDEX (idx_housedeals_date_no)
+                FROM housedeals d
                 STRAIGHT_JOIN houseinfos h ON d.apt_seq = h.apt_seq
                 STRAIGHT_JOIN dongcodes dc ON CONCAT(h.sgg_cd, h.umd_cd) = dc.dong_code
             </when>
