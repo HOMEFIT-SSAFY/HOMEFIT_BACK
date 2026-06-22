@@ -18,7 +18,7 @@ public record NoticeLHSupply(
                 supply.usage(),
                 supply.address(),
                 supply.area(),
-                supply.expectedAmount(),
+                supply.expectedAmountRaw(),
                 supply.houseType(),
                 supply.householdCount()
 				);
