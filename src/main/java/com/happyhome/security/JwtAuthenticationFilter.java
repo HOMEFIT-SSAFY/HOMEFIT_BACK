@@ -15,11 +15,28 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String BEARER_PREFIX = "Bearer ";
+    private static final String POST = "POST";
 
     private final JwtProvider jwtProvider;
 
     public JwtAuthenticationFilter(JwtProvider jwtProvider) {
         this.jwtProvider = jwtProvider;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        if (!POST.equals(request.getMethod())) {
+            return false;
+        }
+
+        String path = request.getRequestURI();
+        String contextPath = request.getContextPath();
+        if (StringUtils.hasText(contextPath) && path.startsWith(contextPath)) {
+            path = path.substring(contextPath.length());
+        }
+        return "/api/members/register".equals(path)
+                || "/api/members/login".equals(path)
+                || "/api/members/logout".equals(path);
     }
 
     @Override

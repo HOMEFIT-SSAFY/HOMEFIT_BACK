@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.happyhome.transfer.favorite.dao.FavoriteTransferMapper">
+    <select id="count" resultType="int">
+        SELECT COUNT(*)
+        FROM favorite_transfers
+        WHERE user_id = #{userId}
+          AND transfer_id = #{transferId}
+    </select>
+
+    <insert id="save">
+        INSERT IGNORE INTO favorite_transfers (user_id, transfer_id)
+        VALUES (#{userId}, #{transferId})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM favorite_transfers
+        WHERE user_id = #{userId}
+          AND transfer_id = #{transferId}
+    </delete>
+
+    <select id="findTransferIdsByUserId" resultType="int">
+        SELECT transfer_id
+        FROM favorite_transfers
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+        LIMIT #{limit}
+    </select>
+</mapper>

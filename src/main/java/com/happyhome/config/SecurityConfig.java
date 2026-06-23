@@ -47,6 +47,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/members/me/**").authenticated()
                         .requestMatchers("/api/favorites/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/loans/property-analysis").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/transfers/favorites").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/transfers/*/favorite/toggle").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/transfers/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/transfers/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/transfers/**").authenticated()

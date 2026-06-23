@@ -38,7 +38,7 @@ class JwtAuthenticationIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        jdbcTemplate.update("DELETE FROM members WHERE user_id IN ('ssafy')");
+        jdbcTemplate.update("DELETE FROM members WHERE user_id IN ('ssafy', 'jwt-register-user')");
         jdbcTemplate.update("""
                 INSERT INTO members (user_id, password, name, email, phone)
                 VALUES ('ssafy', 'plain-password', 'SSAFY User', 'ssafy@example.com', '010-1111-2222')
@@ -58,6 +58,24 @@ class JwtAuthenticationIntegrationTest {
                 .andExpect(jsonPath("$.accessToken").isNotEmpty())
                 .andExpect(jsonPath("$.refreshToken").isNotEmpty())
                 .andExpect(jsonPath("$.member.userId").value("ssafy"));
+    }
+
+    @Test
+    void registerIgnoresInvalidBearerTokenBecauseEndpointIsPublic() throws Exception {
+        mockMvc.perform(post("/api/members/register")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer invalid-token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "userId":"jwt-register-user",
+                                  "password":"plain-password",
+                                  "name":"JWT Register User",
+                                  "email":"jwt-register-user@example.com",
+                                  "phone":"010-3333-4444"
+                                }
+                                """))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.userId").value("jwt-register-user"));
     }
 
     @Test

@@ -102,6 +102,16 @@ CREATE TABLE IF NOT EXISTS transfer_images (
     FOREIGN KEY (transfer_id) REFERENCES transfers (transfer_id)
 );
 
+CREATE TABLE IF NOT EXISTS favorite_transfers (
+    user_id VARCHAR(50) NOT NULL,
+    transfer_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, transfer_id),
+    INDEX idx_favorite_transfers_transfer (transfer_id),
+    FOREIGN KEY (user_id) REFERENCES members (user_id),
+    FOREIGN KEY (transfer_id) REFERENCES transfers (transfer_id)
+);
+
 CREATE TABLE IF NOT EXISTS rental_notice_cache (
     notice_id VARCHAR(40) PRIMARY KEY,
     title VARCHAR(300) NOT NULL,
