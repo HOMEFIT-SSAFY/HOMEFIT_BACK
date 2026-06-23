@@ -35,6 +35,11 @@ public class RentalService {
     }
 
     public List<RentalNotice> notices(RentalSearchCondition condition) {
+        List<RentalNotice> cachedNotices = mapper.findByCondition(condition);
+        if (!cachedNotices.isEmpty()) {
+            return cachedNotices;
+        }
+
         List<RentalNotice> notices = lhClient.notices(condition);
         notices.forEach(this::cacheQuietly);
         return notices;
@@ -53,8 +58,8 @@ public class RentalService {
 
     private RentalDetail detailFor(RentalNotice notice) {
         Optional<RentalDetail> cachedDetail = mapper.findDetailByNoticeId(notice.noticeId());
-        if (!"api".equals(notice.source())) {
-            return cachedDetail.orElseGet(() -> lhClient.detail(notice));
+        if (cachedDetail.isPresent()) {
+            return cachedDetail.get();
         }
 
         RentalDetail fetchedDetail = lhClient.detail(notice);

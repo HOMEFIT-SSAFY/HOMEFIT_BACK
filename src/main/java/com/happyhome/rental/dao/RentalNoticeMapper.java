@@ -2,6 +2,7 @@ package com.happyhome.rental.dao;
 
 import com.happyhome.rental.dto.RentalDetail;
 import com.happyhome.rental.dto.RentalNotice;
+import com.happyhome.rental.dto.RentalSearchCondition;
 import com.happyhome.rental.dto.RentalSupply;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public interface RentalNoticeMapper {
 	void upsert(RentalNotice notice);
 
 	List<RentalNotice> findRecent();
+
+	List<RentalNotice> findByCondition(RentalSearchCondition condition);
 
     Optional<RentalNotice> findById(String noticeId);
 

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.happyhome.transfer.comment.dao.TransferCommentMapper">
+    <resultMap id="transferCommentMap" type="com.happyhome.transfer.comment.dto.TransferCommentDto">
+        <id column="comment_id" property="commentId"/>
+        <result column="transfer_id" property="transferId"/>
+        <result column="writer_id" property="writerId"/>
+        <result column="content" property="content"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <sql id="commentColumns">
+        comment_id, transfer_id, writer_id, content, created_at, updated_at
+    </sql>
+
+    <select id="findByTransferId" resultMap="transferCommentMap">
+        SELECT <include refid="commentColumns"/>
+        FROM transfer_comments
+        WHERE transfer_id = #{transferId}
+        ORDER BY created_at ASC, comment_id ASC
+    </select>
+
+    <select id="findById" resultMap="transferCommentMap">
+        SELECT <include refid="commentColumns"/>
+        FROM transfer_comments
+        WHERE comment_id = #{commentId}
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="commentId">
+        INSERT INTO transfer_comments (transfer_id, writer_id, content)
+        VALUES (#{transferId}, #{writerId}, #{content})
+    </insert>
+
+    <update id="update">
+        UPDATE transfer_comments
+        SET content = #{content},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE comment_id = #{commentId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM transfer_comments
+        WHERE comment_id = #{commentId}
+    </delete>
+</mapper>

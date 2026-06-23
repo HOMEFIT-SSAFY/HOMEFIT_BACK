@@ -54,13 +54,23 @@
         LEFT JOIN dongcodes dc ON CONCAT(h.sgg_cd, h.umd_cd) = dc.dong_code
     </sql>
 
+    <sql id="regionFirstFrom">
+        FROM dongcodes dc
+        STRAIGHT_JOIN houseinfos h
+            ON h.sgg_cd = LEFT(dc.dong_code, 5)
+            AND h.umd_cd = SUBSTRING(dc.dong_code, 6, 5)
+        STRAIGHT_JOIN housedeals d ON d.apt_seq = h.apt_seq
+    </sql>
+
     <select id="search" resultMap="houseDealMap">
         <include refid="selectClause"/>
         <choose>
-            <when test="keyword == null or keyword.trim() == ''">
-                FROM housedeals d
-                STRAIGHT_JOIN houseinfos h ON d.apt_seq = h.apt_seq
-                STRAIGHT_JOIN dongcodes dc ON CONCAT(h.sgg_cd, h.umd_cd) = dc.dong_code
+            <when test="(keyword == null or keyword.trim() == '')
+                    and (sidoName != null and sidoName.trim() != ''
+                        or gugunName != null and gugunName.trim() != ''
+                        or dongName != null and dongName.trim() != ''
+                        or lawdCd != null and lawdCd.trim() != '')">
+                <include refid="regionFirstFrom"/>
             </when>
             <otherwise>
                 <include refid="baseFrom"/>

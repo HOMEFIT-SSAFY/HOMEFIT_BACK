@@ -11,5 +11,9 @@ public record RentalSearchCondition(
         page = page <= 0 ? 1 : page;
         size = size <= 0 ? 12 : size;
     }
+
+    public int offset() {
+        return (page - 1) * size;
+    }
 }
 
