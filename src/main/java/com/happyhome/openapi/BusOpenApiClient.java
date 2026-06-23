@@ -57,6 +57,20 @@ public class BusOpenApiClient {
                 .toList();
     }
 
+    public List<BusStop> nearbyStops(double latitude, double longitude) {
+        if (!configured()) {
+            return List.of();
+        }
+        String body = get("/getCrdntPrxmtSttnList", Map.of(
+                "gpsLati", latitude,
+                "gpsLong", longitude
+        ));
+        return parser.items(body).stream()
+                .map(node -> busStop(text(node, "citycode"), node))
+                .filter(stop -> OpenApiUri.hasText(stop.nodeId()))
+                .toList();
+    }
+
     private String get(String path, Map<String, ?> params) {
         Map<String, Object> requestParams = new java.util.LinkedHashMap<>();
         requestParams.put("serviceKey", properties.getBus().getServiceKey());

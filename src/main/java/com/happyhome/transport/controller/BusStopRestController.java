@@ -34,6 +34,14 @@ public class BusStopRestController {
         return busStopService.findNearby(latitude, longitude, radiusMeters, limit);
     }
 
+    @GetMapping("/nearby/openapi")
+    public List<BusStop> nearbyFromOpenApi(
+            @RequestParam double latitude,
+            @RequestParam double longitude
+    ) {
+        return busStopService.findNearbyFromOpenApi(latitude, longitude);
+    }
+
     @GetMapping("/status")
     public BusStopStatus status() {
         return busStopSyncService.status();
