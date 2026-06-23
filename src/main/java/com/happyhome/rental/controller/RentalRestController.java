@@ -29,7 +29,7 @@ public class RentalRestController {
     public List<RentalNotice> rentals(
             @RequestParam(defaultValue = "") String keyword,
             @RequestParam(defaultValue = "") String regionCode,
-            @RequestParam(defaultValue = "공고중") String status,
+            @RequestParam(defaultValue = "") String status,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "12") int size
     ) {
