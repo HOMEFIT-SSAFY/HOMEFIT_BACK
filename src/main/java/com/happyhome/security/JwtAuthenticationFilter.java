@@ -56,11 +56,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Authentication authentication = jwtProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-            filterChain.doFilter(request, response);
         } catch (JwtException | IllegalArgumentException e) {
             SecurityContextHolder.clearContext();
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token.");
         }
+        filterChain.doFilter(request, response);
     }
 
     private String resolveToken(HttpServletRequest request) {
