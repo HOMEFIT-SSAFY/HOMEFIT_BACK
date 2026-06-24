@@ -45,10 +45,11 @@ class RentalNoticeEmailServiceTest {
     @Test
     void sendsClosingSoonEmailOncePerNoticeAndUser() {
         MemberDto member = member("ssafy", "ssafy@example.com");
+        member.setRentalNoticeEmailEnabled(true);
         when(memberService.findByUserId("ssafy")).thenReturn(Optional.of(member));
         when(favoriteService.findFavorites("ssafy", 100))
                 .thenReturn(List.of(detail("LH-001", "LH notice", "2026.06.01", "2026.06.30", "2026.06.20", "2026.06.24")));
-        when(emailLogDao.exists("ssafy", "LH-001", "CLOSING_SOON")).thenReturn(false);
+        when(emailLogDao.exists("ssafy", "LH-001", "CLOSING_SOON_D2")).thenReturn(false);
         when(mailSenderProvider.getIfAvailable()).thenReturn(mailSender);
         when(mailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
 
@@ -58,56 +59,69 @@ class RentalNoticeEmailServiceTest {
         Mockito.verify(emailLogDao).save(
                 Mockito.eq("ssafy"),
                 Mockito.eq("LH-001"),
-                Mockito.eq("CLOSING_SOON"),
+                Mockito.eq("CLOSING_SOON_D2"),
                 Mockito.eq("ssafy@example.com"),
                 Mockito.argThat(subject -> subject.endsWith(": LH notice"))
         );
     }
 
     @Test
-    void skipsEmailWhenSameEventWasAlreadySent() {
+    void skipsEmailWhenMemberDidNotConsent() {
         MemberDto member = member("ssafy", "ssafy@example.com");
+        member.setRentalNoticeEmailEnabled(false);
+        when(memberService.findByUserId("ssafy")).thenReturn(Optional.of(member));
+
+        RentalNoticeEmailService.EmailRunResult result = service.sendFavoriteNoticeEmails("ssafy");
+
+        assertThat(result.sentCount()).isZero();
+        assertThat(result.consentRequiredCount()).isEqualTo(1);
+        Mockito.verifyNoInteractions(favoriteService);
+        Mockito.verifyNoInteractions(emailLogDao);
+        Mockito.verify(mailSenderProvider, Mockito.never()).getIfAvailable();
+    }
+
+    @Test
+    void skipsEmailWhenSameClosingEventWasAlreadySentToday() {
+        MemberDto member = member("ssafy", "ssafy@example.com");
+        member.setRentalNoticeEmailEnabled(true);
         when(memberService.findByUserId("ssafy")).thenReturn(Optional.of(member));
         when(favoriteService.findFavorites("ssafy", 100))
                 .thenReturn(List.of(detail("LH-001", "LH notice", "2026.06.01", "2026.06.30", "2026.06.20", "2026.06.24")));
-        when(emailLogDao.exists("ssafy", "LH-001", "CLOSING_SOON")).thenReturn(true);
+        when(emailLogDao.exists("ssafy", "LH-001", "CLOSING_SOON_D2")).thenReturn(true);
 
         RentalNoticeEmailService.EmailRunResult result = service.sendFavoriteNoticeEmails("ssafy");
 
         assertThat(result.sentCount()).isZero();
         Mockito.verify(emailLogDao, Mockito.never()).save(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(mailSenderProvider, Mockito.never()).getIfAvailable();
     }
 
     @Test
-    void usesNoticeDatesWhenDetailApplicationDatesAreMissing() {
+    void skipsEmailWhenNoticeClosesMoreThanThreeDaysLaterEvenIfApplicationStartsToday() {
         MemberDto member = member("ssafy", "ssafy@example.com");
+        member.setRentalNoticeEmailEnabled(true);
         when(memberService.findByUserId("ssafy")).thenReturn(Optional.of(member));
         when(favoriteService.findFavorites("ssafy", 100))
                 .thenReturn(List.of(detail("BN-0007676", "LH notice", "2026.06.22", "2026.07.09", "", "")));
-        when(emailLogDao.exists("ssafy", "BN-0007676", "APPLY_OPEN")).thenReturn(false);
         when(mailSenderProvider.getIfAvailable()).thenReturn(mailSender);
-        when(mailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
 
         RentalNoticeEmailService.EmailRunResult result = service.sendFavoriteNoticeEmails("ssafy");
 
-        assertThat(result.sentCount()).isEqualTo(1);
-        Mockito.verify(emailLogDao).save(
-                Mockito.eq("ssafy"),
-                Mockito.eq("BN-0007676"),
-                Mockito.eq("APPLY_OPEN"),
-                Mockito.eq("ssafy@example.com"),
-                Mockito.argThat(subject -> subject.endsWith(": LH notice"))
-        );
+        assertThat(result.sentCount()).isZero();
+        assertThat(result.skippedCount()).isEqualTo(1);
+        Mockito.verify(emailLogDao, Mockito.never()).save(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
+        Mockito.verify(mailSender, Mockito.never()).send(Mockito.any(MimeMessage.class));
     }
 
     @Test
-    void sendsHomeFitHtmlEmailWithBulletsAndHomepageButton() throws Exception {
+    void sendsHomeFitHtmlEmailWithClosingSoonLabelAndHomepageButton() throws Exception {
         MemberDto member = member("ssafy", "ssafy@example.com");
+        member.setRentalNoticeEmailEnabled(true);
         MimeMessage message = new MimeMessage((Session) null);
         when(memberService.findByUserId("ssafy")).thenReturn(Optional.of(member));
         when(favoriteService.findFavorites("ssafy", 100))
-                .thenReturn(List.of(detail("BN-0007676", "Yeongjong notice", "2026.06.22", "2026.07.09", "", "")));
-        when(emailLogDao.exists("ssafy", "BN-0007676", "APPLY_OPEN")).thenReturn(false);
+                .thenReturn(List.of(detail("BN-0007676", "Yeongjong notice", "2026.06.01", "2026.06.24", "", "")));
+        when(emailLogDao.exists("ssafy", "BN-0007676", "CLOSING_SOON_D2")).thenReturn(false);
         when(mailSenderProvider.getIfAvailable()).thenReturn(mailSender);
         when(mailSender.createMimeMessage()).thenReturn(message);
 
@@ -116,8 +130,8 @@ class RentalNoticeEmailServiceTest {
         assertThat(result.sentCount()).isEqualTo(1);
         assertThat(extractText(message.getContent()))
                 .contains("HomeFit")
-                .contains("● 알림 유형: LH 공고 접수 시작")
-                .contains("● 공고명")
+                .contains("LH 공고 마감 2일 전")
+                .contains("Yeongjong notice")
                 .contains("HomeFit 홈페이지 바로가기")
                 .contains("https://homefit.example.com/home");
         Mockito.verify(mailSender).send(message);

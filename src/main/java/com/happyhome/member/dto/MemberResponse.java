@@ -4,10 +4,17 @@ public record MemberResponse(
         String userId,
         String name,
         String email,
-        String phone
+        String phone,
+        boolean rentalNoticeEmailEnabled
 ) {
 
     public static MemberResponse from(MemberDto member) {
-        return new MemberResponse(member.getUserId(), member.getName(), member.getEmail(), member.getPhone());
+        return new MemberResponse(
+                member.getUserId(),
+                member.getName(),
+                member.getEmail(),
+                member.getPhone(),
+                member.isRentalNoticeEmailEnabled()
+        );
     }
 }

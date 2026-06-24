@@ -8,20 +8,28 @@ import com.happyhome.transport.dto.BusStopSyncResult;
 import com.happyhome.transport.service.BusStopSyncService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/admin/batch")
-@RequiredArgsConstructor
 @Tag(name = "Admin Batch", description = "Open API batch manual execution")
 public class LHController {
 
     private final NoticeLHService noticeLHService;
     private final LoanProductBatchService loanProductBatchService;
     private final BusStopSyncService busStopSyncService;
+
+    public LHController(
+            NoticeLHService noticeLHService,
+            LoanProductBatchService loanProductBatchService,
+            BusStopSyncService busStopSyncService
+    ) {
+        this.noticeLHService = noticeLHService;
+        this.loanProductBatchService = loanProductBatchService;
+        this.busStopSyncService = busStopSyncService;
+    }
 
     @Operation(summary = "Run LH notice sync batch manually")
     @PostMapping("/lh-notices")

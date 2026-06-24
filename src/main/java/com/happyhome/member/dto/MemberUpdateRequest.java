@@ -6,6 +6,7 @@ public class MemberUpdateRequest {
     private String name;
     private String email;
     private String phone;
+    private boolean rentalNoticeEmailEnabled;
 
     public String getPassword() {
         return password;
@@ -39,12 +40,21 @@ public class MemberUpdateRequest {
         this.phone = phone;
     }
 
+    public boolean isRentalNoticeEmailEnabled() {
+        return rentalNoticeEmailEnabled;
+    }
+
+    public void setRentalNoticeEmailEnabled(boolean rentalNoticeEmailEnabled) {
+        this.rentalNoticeEmailEnabled = rentalNoticeEmailEnabled;
+    }
+
     public MemberDto toMemberDto() {
         MemberDto member = new MemberDto();
         member.setPassword(password);
         member.setName(name);
         member.setEmail(email);
         member.setPhone(phone);
+        member.setRentalNoticeEmailEnabled(rentalNoticeEmailEnabled);
         return member;
     }
 }

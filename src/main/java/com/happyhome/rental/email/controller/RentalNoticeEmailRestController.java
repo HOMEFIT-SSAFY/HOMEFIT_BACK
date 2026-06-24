@@ -23,6 +23,11 @@ public class RentalNoticeEmailRestController {
         if (authentication == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok(rentalNoticeEmailService.sendFavoriteNoticeEmails(authentication.getName()));
+        RentalNoticeEmailService.EmailRunResult result =
+                rentalNoticeEmailService.sendFavoriteNoticeEmails(authentication.getName());
+        if (result.consentRequiredCount() > 0) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(result);
+        }
+        return ResponseEntity.ok(result);
     }
 }

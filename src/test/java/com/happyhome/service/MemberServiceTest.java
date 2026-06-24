@@ -30,6 +30,31 @@ class MemberServiceTest {
     }
 
     @Test
+    void registerDefaultsRentalNoticeEmailConsentToFalse() {
+        FakeMemberDao memberDao = new FakeMemberDao();
+        MemberService memberService = new MemberService(memberDao, passwordEncoder);
+        MemberDto member = member("ssafy", "plain-password");
+
+        boolean registered = memberService.register(member);
+
+        assertThat(registered).isTrue();
+        assertThat(memberDao.saved.get("ssafy").isRentalNoticeEmailEnabled()).isFalse();
+    }
+
+    @Test
+    void registerKeepsExplicitRentalNoticeEmailConsent() {
+        FakeMemberDao memberDao = new FakeMemberDao();
+        MemberService memberService = new MemberService(memberDao, passwordEncoder);
+        MemberDto member = member("ssafy", "plain-password");
+        member.setRentalNoticeEmailEnabled(true);
+
+        boolean registered = memberService.register(member);
+
+        assertThat(registered).isTrue();
+        assertThat(memberDao.saved.get("ssafy").isRentalNoticeEmailEnabled()).isTrue();
+    }
+
+    @Test
     void registerRejectsDuplicateUserId() {
         FakeMemberDao memberDao = new FakeMemberDao();
         memberDao.saved.put("ssafy", member("ssafy", "{bcrypt}stored"));
@@ -86,6 +111,22 @@ class MemberServiceTest {
         assertThat(updated.get().getPassword()).startsWith("{bcrypt}");
         assertThat(passwordEncoder.matches("changed-password", updated.get().getPassword())).isTrue();
         assertThat(updated.get().getName()).isEqualTo("김싸피");
+    }
+
+    @Test
+    void updateChangesRentalNoticeEmailConsent() {
+        FakeMemberDao memberDao = new FakeMemberDao();
+        MemberDto saved = member("ssafy", "{bcrypt}old");
+        saved.setRentalNoticeEmailEnabled(false);
+        memberDao.saved.put("ssafy", saved);
+        MemberService memberService = new MemberService(memberDao, passwordEncoder);
+        MemberDto form = member("ssafy", "");
+        form.setRentalNoticeEmailEnabled(true);
+
+        Optional<MemberDto> updated = memberService.update("ssafy", form);
+
+        assertThat(updated).isPresent();
+        assertThat(updated.get().isRentalNoticeEmailEnabled()).isTrue();
     }
 
     @Test
@@ -153,6 +194,7 @@ class MemberServiceTest {
             copied.setName(member.getName());
             copied.setEmail(member.getEmail());
             copied.setPhone(member.getPhone());
+            copied.setRentalNoticeEmailEnabled(member.isRentalNoticeEmailEnabled());
             return copied;
         }
     }

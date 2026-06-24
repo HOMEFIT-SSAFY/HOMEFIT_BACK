@@ -95,10 +95,12 @@ public class RentalNoticeEmailService {
     public EmailRunResult sendFavoriteNoticeEmails(String userId) {
         Optional<MemberDto> member = memberService.findByUserId(userId);
         if (member.isEmpty() || !StringUtils.hasText(member.get().getEmail())) {
-            return new EmailRunResult(0, 0, 1);
+            return new EmailRunResult(0, 0, 1, 0);
+        }
+        if (!member.get().isRentalNoticeEmailEnabled()) {
+            return new EmailRunResult(0, 0, 0, 1);
         }
 
-        JavaMailSender mailSender = mailSenderProvider.getIfAvailable();
         List<RentalNoticeDetail> favorites = favoriteService.findFavorites(userId, 100);
         int sent = 0;
         int skipped = 0;
@@ -113,6 +115,7 @@ public class RentalNoticeEmailService {
                 skipped++;
                 continue;
             }
+            JavaMailSender mailSender = mailSenderProvider.getIfAvailable();
             if (mailSender == null) {
                 skipped++;
                 continue;
@@ -122,7 +125,7 @@ public class RentalNoticeEmailService {
             emailLogDao.save(userId, favorite.notice().noticeId(), eventName, member.get().getEmail(), subject);
             sent++;
         }
-        return new EmailRunResult(sent, skipped, 0);
+        return new EmailRunResult(sent, skipped, 0, 0);
     }
 
     public List<EmailRunResult> sendAllFavoriteNoticeEmails() {
@@ -140,15 +143,15 @@ public class RentalNoticeEmailService {
             return Optional.empty();
         }
         LocalDate today = LocalDate.now(clock);
-        if (today.isEqual(startDate.get())) {
-            return Optional.of(RentalNoticeEmailEventType.APPLY_OPEN);
-        }
         long daysUntilClose = ChronoUnit.DAYS.between(today, endDate.get());
         if (daysUntilClose >= 0 && daysUntilClose <= closingSoonDays) {
-            return Optional.of(RentalNoticeEmailEventType.CLOSING_SOON);
-        }
-        if (today.isAfter(startDate.get()) && today.isBefore(endDate.get())) {
-            return Optional.of(RentalNoticeEmailEventType.APPLY_ACTIVE);
+            return switch ((int) daysUntilClose) {
+                case 0 -> Optional.of(RentalNoticeEmailEventType.CLOSING_SOON_D0);
+                case 1 -> Optional.of(RentalNoticeEmailEventType.CLOSING_SOON_D1);
+                case 2 -> Optional.of(RentalNoticeEmailEventType.CLOSING_SOON_D2);
+                case 3 -> Optional.of(RentalNoticeEmailEventType.CLOSING_SOON_D3);
+                default -> Optional.empty();
+            };
         }
         return Optional.empty();
     }
@@ -271,6 +274,11 @@ public class RentalNoticeEmailService {
         return HtmlUtils.htmlEscape(displayText(value));
     }
 
-    public record EmailRunResult(int sentCount, int skippedCount, int missingMemberCount) {
+    public record EmailRunResult(
+            int sentCount,
+            int skippedCount,
+            int missingMemberCount,
+            int consentRequiredCount
+    ) {
     }
 }

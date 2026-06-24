@@ -7,6 +7,7 @@ public class MemberDto {
     private String name;
     private String email;
     private String phone;
+    private boolean rentalNoticeEmailEnabled;
 
     public String getUserId() {
         return userId;
@@ -46,5 +47,13 @@ public class MemberDto {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public boolean isRentalNoticeEmailEnabled() {
+        return rentalNoticeEmailEnabled;
+    }
+
+    public void setRentalNoticeEmailEnabled(boolean rentalNoticeEmailEnabled) {
+        this.rentalNoticeEmailEnabled = rentalNoticeEmailEnabled;
     }
 }

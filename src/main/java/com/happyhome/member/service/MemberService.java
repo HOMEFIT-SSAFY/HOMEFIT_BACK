@@ -74,6 +74,7 @@ public class MemberService {
                     member.setName(form.getName());
                     member.setEmail(form.getEmail());
                     member.setPhone(form.getPhone());
+                    member.setRentalNoticeEmailEnabled(form.isRentalNoticeEmailEnabled());
                     memberDao.update(member);
                     return member;
                 });
