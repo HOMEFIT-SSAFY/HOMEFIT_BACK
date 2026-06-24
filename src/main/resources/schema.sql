@@ -69,6 +69,34 @@ CREATE TABLE IF NOT EXISTS favorite_deals (
     PRIMARY KEY (user_id, deal_no)
 );
 
+CREATE TABLE IF NOT EXISTS property_deal_cache (
+    property_deal_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    property_type VARCHAR(30) NOT NULL,
+    deal_type VARCHAR(30) NOT NULL,
+    source_id VARCHAR(220) NOT NULL,
+    lawd_cd VARCHAR(5) NOT NULL,
+    sido_name VARCHAR(30),
+    gugun_name VARCHAR(30),
+    dong_name VARCHAR(80),
+    property_name VARCHAR(160),
+    deal_date VARCHAR(10),
+    deal_amount VARCHAR(40),
+    deposit_amount VARCHAR(40),
+    monthly_rent_amount VARCHAR(40),
+    exclusive_area VARCHAR(40),
+    floor VARCHAR(20),
+    build_year VARCHAR(20),
+    jibun VARCHAR(80),
+    latitude DOUBLE,
+    longitude DOUBLE,
+    source VARCHAR(20),
+    cached_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uk_property_deal_cache_source UNIQUE (source_id),
+    INDEX idx_property_deals_type_date (property_type, deal_type, deal_date),
+    INDEX idx_property_deals_region_type (lawd_cd, property_type, deal_type),
+    INDEX idx_property_deals_search (property_name, dong_name)
+);
+
 CREATE TABLE IF NOT EXISTS favorite_rental_notices (
     user_id VARCHAR(50) NOT NULL,
     notice_id VARCHAR(40) NOT NULL,

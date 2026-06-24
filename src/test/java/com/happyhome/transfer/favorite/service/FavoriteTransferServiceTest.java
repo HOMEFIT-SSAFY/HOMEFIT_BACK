@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.happyhome.transfer.dao.TransferDao;
 import com.happyhome.transfer.dto.TransferDto;
 import com.happyhome.transfer.favorite.dao.FavoriteTransferDao;
+import com.happyhome.transfer.service.TransferImageStorage;
 import com.happyhome.transfer.service.TransferService;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ class FavoriteTransferServiceTest {
         FakeFavoriteTransferDao favoriteDao = new FakeFavoriteTransferDao();
         FavoriteTransferService service = new FavoriteTransferService(
                 favoriteDao,
-                new TransferService(new FakeTransferDao())
+                new TransferService(new FakeTransferDao(), fakeImageStorage())
         );
 
         assertThat(service.toggle("ssafy", 7)).isTrue();
@@ -42,7 +43,7 @@ class FavoriteTransferServiceTest {
 
         FavoriteTransferService service = new FavoriteTransferService(
                 favoriteDao,
-                new TransferService(transferDao)
+                new TransferService(transferDao, fakeImageStorage())
         );
 
         List<TransferDto> favorites = service.findFavorites("ssafy", 100);
@@ -55,6 +56,10 @@ class FavoriteTransferServiceTest {
         transfer.setTransferId(transferId);
         transfer.setTitle(title);
         return transfer;
+    }
+
+    private static TransferImageStorage fakeImageStorage() {
+        return file -> "https://example.com/fake.jpg";
     }
 
     private static class FakeFavoriteTransferDao extends FavoriteTransferDao {

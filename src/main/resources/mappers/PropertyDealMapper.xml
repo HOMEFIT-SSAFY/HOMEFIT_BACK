@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.happyhome.property.dao.PropertyDealMapper">
+
+    <resultMap id="propertyDealMap" type="com.happyhome.property.dto.PropertyDeal">
+        <constructor>
+            <arg column="property_deal_id" javaType="long"/>
+            <arg column="property_type" javaType="com.happyhome.property.dto.PropertyType"/>
+            <arg column="deal_type" javaType="com.happyhome.property.dto.PropertyDealType"/>
+            <arg column="source_id" javaType="string"/>
+            <arg column="lawd_cd" javaType="string"/>
+            <arg column="sido_name" javaType="string"/>
+            <arg column="gugun_name" javaType="string"/>
+            <arg column="dong_name" javaType="string"/>
+            <arg column="property_name" javaType="string"/>
+            <arg column="deal_date" javaType="string"/>
+            <arg column="deal_amount" javaType="string"/>
+            <arg column="deposit_amount" javaType="string"/>
+            <arg column="monthly_rent_amount" javaType="string"/>
+            <arg column="exclusive_area" javaType="string"/>
+            <arg column="floor" javaType="string"/>
+            <arg column="build_year" javaType="string"/>
+            <arg column="jibun" javaType="string"/>
+            <arg column="latitude" javaType="double"/>
+            <arg column="longitude" javaType="double"/>
+            <arg column="source" javaType="string"/>
+        </constructor>
+    </resultMap>
+
+    <select id="search" resultMap="propertyDealMap">
+        SELECT
+            p.property_deal_id,
+            p.property_type,
+            p.deal_type,
+            p.source_id,
+            p.lawd_cd,
+            COALESCE(NULLIF(p.sido_name, ''), r.sido_name) AS sido_name,
+            COALESCE(NULLIF(p.gugun_name, ''), r.gugun_name) AS gugun_name,
+            p.dong_name,
+            p.property_name,
+            p.deal_date,
+            p.deal_amount,
+            p.deposit_amount,
+            p.monthly_rent_amount,
+            p.exclusive_area,
+            p.floor,
+            p.build_year,
+            p.jibun,
+            p.latitude,
+            p.longitude,
+            p.source
+        FROM property_deal_cache p
+        LEFT JOIN (
+            SELECT DISTINCT LEFT(dong_code, 5) AS lawd_cd, sido_name, gugun_name
+            FROM dongcodes
+            WHERE dong_code IS NOT NULL AND LENGTH(dong_code) >= 5
+        ) r ON r.lawd_cd = p.lawd_cd
+        <where>
+            <if test="propertyType != null">
+                AND p.property_type = #{propertyType}
+            </if>
+            <if test="dealType != null">
+                AND p.deal_type = #{dealType}
+            </if>
+            <if test="lawdCd != null and lawdCd.trim() != ''">
+                AND p.lawd_cd = #{lawdCd}
+            </if>
+            <if test="sidoName != null and sidoName.trim() != ''">
+                AND COALESCE(NULLIF(p.sido_name, ''), r.sido_name) = #{sidoName}
+            </if>
+            <if test="gugunName != null and gugunName.trim() != ''">
+                AND COALESCE(NULLIF(p.gugun_name, ''), r.gugun_name) = #{gugunName}
+            </if>
+            <if test="dongName != null and dongName.trim() != ''">
+                AND p.dong_name = #{dongName}
+            </if>
+            <if test="keyword != null and keyword.trim() != ''">
+                <bind name="keywordLike" value="'%' + keyword.trim() + '%'"/>
+                AND (
+                    p.property_name LIKE #{keywordLike}
+                    OR COALESCE(NULLIF(p.sido_name, ''), r.sido_name) LIKE #{keywordLike}
+                    OR COALESCE(NULLIF(p.gugun_name, ''), r.gugun_name) LIKE #{keywordLike}
+                    OR p.dong_name LIKE #{keywordLike}
+                    OR p.jibun LIKE #{keywordLike}
+                )
+            </if>
+        </where>
+        ORDER BY p.deal_date DESC, p.property_deal_id DESC
+        LIMIT #{limit}
+    </select>
+
+    <insert id="upsert">
+        INSERT INTO property_deal_cache (
+            property_type,
+            deal_type,
+            source_id,
+            lawd_cd,
+            sido_name,
+            gugun_name,
+            dong_name,
+            property_name,
+            deal_date,
+            deal_amount,
+            deposit_amount,
+            monthly_rent_amount,
+            exclusive_area,
+            floor,
+            build_year,
+            jibun,
+            latitude,
+            longitude,
+            source,
+            cached_at
+        ) VALUES (
+            #{propertyType},
+            #{dealType},
+            #{sourceId},
+            #{lawdCd},
+            #{sidoName},
+            #{gugunName},
+            #{dongName},
+            #{propertyName},
+            #{dealDate},
+            #{dealAmount},
+            #{depositAmount},
+            #{monthlyRentAmount},
+            #{exclusiveArea},
+            #{floor},
+            #{buildYear},
+            #{jibun},
+            #{latitude},
+            #{longitude},
+            #{source},
+            CURRENT_TIMESTAMP
+        )
+        ON DUPLICATE KEY UPDATE
+            property_type = VALUES(property_type),
+            deal_type = VALUES(deal_type),
+            lawd_cd = VALUES(lawd_cd),
+            sido_name = VALUES(sido_name),
+            gugun_name = VALUES(gugun_name),
+            dong_name = VALUES(dong_name),
+            property_name = VALUES(property_name),
+            deal_date = VALUES(deal_date),
+            deal_amount = VALUES(deal_amount),
+            deposit_amount = VALUES(deposit_amount),
+            monthly_rent_amount = VALUES(monthly_rent_amount),
+            exclusive_area = VALUES(exclusive_area),
+            floor = VALUES(floor),
+            build_year = VALUES(build_year),
+            jibun = VALUES(jibun),
+            latitude = VALUES(latitude),
+            longitude = VALUES(longitude),
+            source = VALUES(source),
+            cached_at = CURRENT_TIMESTAMP
+    </insert>
+
+    <select id="findLawdCodes" resultType="string">
+        SELECT DISTINCT LEFT(dong_code, 5)
+        FROM dongcodes
+        WHERE dong_code IS NOT NULL
+          AND LENGTH(dong_code) >= 5
+        ORDER BY LEFT(dong_code, 5)
+    </select>
+</mapper>

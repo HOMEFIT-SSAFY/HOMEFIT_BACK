@@ -12,6 +12,7 @@ public class OpenApiProperties {
     private final Lh lh = new Lh();
     private final Commercial commercial = new Commercial();
     private final Finlife finlife = new Finlife();
+    private final Rtms rtms = new Rtms();
 
     public Data getData() {
         return data;
@@ -39,6 +40,10 @@ public class OpenApiProperties {
 
     public Finlife getFinlife() {
         return finlife;
+    }
+
+    public Rtms getRtms() {
+        return rtms;
     }
 
     public static class Data {
@@ -185,6 +190,45 @@ public class OpenApiProperties {
 
         public void setRentHouseLoanUrl(String rentHouseLoanUrl) {
             this.rentHouseLoanUrl = rentHouseLoanUrl;
+        }
+    }
+
+    public static class Rtms {
+        private String officetelTradeUrl = "";
+        private String officetelRentUrl = "";
+        private String oneroomTradeUrl = "";
+        private String oneroomRentUrl = "";
+
+        public String getOfficetelTradeUrl() {
+            return officetelTradeUrl;
+        }
+
+        public void setOfficetelTradeUrl(String officetelTradeUrl) {
+            this.officetelTradeUrl = officetelTradeUrl;
+        }
+
+        public String getOfficetelRentUrl() {
+            return officetelRentUrl;
+        }
+
+        public void setOfficetelRentUrl(String officetelRentUrl) {
+            this.officetelRentUrl = officetelRentUrl;
+        }
+
+        public String getOneroomTradeUrl() {
+            return oneroomTradeUrl;
+        }
+
+        public void setOneroomTradeUrl(String oneroomTradeUrl) {
+            this.oneroomTradeUrl = oneroomTradeUrl;
+        }
+
+        public String getOneroomRentUrl() {
+            return oneroomRentUrl;
+        }
+
+        public void setOneroomRentUrl(String oneroomRentUrl) {
+            this.oneroomRentUrl = oneroomRentUrl;
         }
     }
 }

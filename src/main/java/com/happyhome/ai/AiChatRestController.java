@@ -18,6 +18,6 @@ public class AiChatRestController {
 
     @PostMapping("/chat")
     public AiChatResponse chat(@Valid @RequestBody AiChatRequest request) {
-        return aiService.chat(request.question());
+        return aiService.chat(request);
     }
 }

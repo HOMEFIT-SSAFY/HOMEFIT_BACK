@@ -6,6 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SSAFY Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script>
+      (() => {
+        const originalOpen = XMLHttpRequest.prototype.open;
+        const originalSend = XMLHttpRequest.prototype.send;
+
+        XMLHttpRequest.prototype.open = function(method, url, ...rest) {
+          this.__happyhomeAiChatUrl = typeof url === 'string' && url.includes('/api/ai/chat');
+          return originalOpen.call(this, method, url, ...rest);
+        };
+
+        XMLHttpRequest.prototype.send = function(body) {
+          if (!this.__happyhomeAiChatUrl || typeof body !== 'string') {
+            return originalSend.call(this, body);
+          }
+
+          try {
+            const payload = JSON.parse(body);
+            const query = new URLSearchParams(window.location.search);
+            const coordinateInputs = [...document.querySelectorAll('input[type="number"][step="0.0001"]')];
+            const longitudeValue = query.get('longitude') ?? query.get('lng') ?? coordinateInputs[0]?.value;
+            const latitudeValue = query.get('latitude') ?? query.get('lat') ?? coordinateInputs[1]?.value;
+            const latitude = Number(latitudeValue);
+            const longitude = Number(longitudeValue);
+            const radiusMeters = Number(query.get('radiusMeters') ?? query.get('radius'));
+            return originalSend.call(this, JSON.stringify({
+              ...payload,
+              page: window.location.pathname,
+              route: window.location.pathname + window.location.search,
+              label: query.get('label') ?? query.get('keyword') ?? query.get('gugunName') ?? '',
+              latitude: Number.isFinite(latitude) ? latitude : null,
+              longitude: Number.isFinite(longitude) ? longitude : null,
+              radiusMeters: Number.isFinite(radiusMeters) ? radiusMeters : null,
+            }));
+          } catch {
+            return originalSend.call(this, body);
+          }
+        };
+      })();
+    </script>
     <script type="module" crossorigin src="/app/assets/index-DpAzOzeG.js"></script>
     <link rel="stylesheet" crossorigin href="/app/assets/index-BwnazvfZ.css">
   </head>
