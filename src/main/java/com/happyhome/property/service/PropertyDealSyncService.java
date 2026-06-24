@@ -1,7 +1,9 @@
 package com.happyhome.property.service;
 
 import com.happyhome.batch.dto.NoticeLHResult;
+import com.happyhome.openapi.KakaoLocalApiClient;
 import com.happyhome.openapi.RtmsOpenApiClient;
+import com.happyhome.openapi.dto.GeoCoordinate;
 import com.happyhome.property.dao.PropertyDealMapper;
 import com.happyhome.property.dto.PropertyDeal;
 import com.happyhome.property.dto.PropertyDealType;
@@ -19,10 +21,16 @@ public class PropertyDealSyncService {
 
     private final RtmsOpenApiClient rtmsOpenApiClient;
     private final PropertyDealMapper propertyDealMapper;
+    private final KakaoLocalApiClient kakaoLocalApiClient;
 
-    public PropertyDealSyncService(RtmsOpenApiClient rtmsOpenApiClient, PropertyDealMapper propertyDealMapper) {
+    public PropertyDealSyncService(
+            RtmsOpenApiClient rtmsOpenApiClient,
+            PropertyDealMapper propertyDealMapper,
+            KakaoLocalApiClient kakaoLocalApiClient
+    ) {
         this.rtmsOpenApiClient = rtmsOpenApiClient;
         this.propertyDealMapper = propertyDealMapper;
+        this.kakaoLocalApiClient = kakaoLocalApiClient;
     }
 
     public NoticeLHResult syncRecent(int months) {
@@ -60,7 +68,7 @@ public class PropertyDealSyncService {
                         fetchedCount += deals.size();
                         for (PropertyDeal deal : deals) {
                             try {
-                                propertyDealMapper.upsert(deal);
+                                propertyDealMapper.upsert(enrichCoordinate(deal));
                                 savedCount++;
                             } catch (Exception exception) {
                                 errors.add(deal.sourceId() + ": " + exception.getMessage());
@@ -73,6 +81,49 @@ public class PropertyDealSyncService {
 
         String status = errors.isEmpty() ? "SUCCESS" : (savedCount == 0 ? "FAILED" : "PARTIAL_FAILED");
         return new NoticeLHResult(status, fetchedCount, savedCount, errors);
+    }
+
+    private PropertyDeal enrichCoordinate(PropertyDeal deal) {
+        if (deal.latitude() != null && deal.longitude() != null) {
+            return deal;
+        }
+        return kakaoLocalApiClient.geocode(geocodeQuery(deal))
+                .map(coordinate -> withCoordinate(deal, coordinate))
+                .orElse(deal);
+    }
+
+    private PropertyDeal withCoordinate(PropertyDeal deal, GeoCoordinate coordinate) {
+        return new PropertyDeal(
+                deal.propertyDealId(),
+                deal.propertyType(),
+                deal.dealType(),
+                deal.sourceId(),
+                deal.lawdCd(),
+                deal.sidoName(),
+                deal.gugunName(),
+                deal.dongName(),
+                deal.propertyName(),
+                deal.dealDate(),
+                deal.dealAmount(),
+                deal.depositAmount(),
+                deal.monthlyRentAmount(),
+                deal.exclusiveArea(),
+                deal.floor(),
+                deal.buildYear(),
+                deal.jibun(),
+                coordinate.latitude(),
+                coordinate.longitude(),
+                deal.source()
+        );
+    }
+
+    private String geocodeQuery(PropertyDeal deal) {
+        return List.of(deal.sidoName(), deal.gugunName(), deal.dongName(), deal.jibun(), deal.propertyName()).stream()
+                .filter(value -> value != null && !value.isBlank())
+                .map(String::trim)
+                .distinct()
+                .reduce((left, right) -> left + " " + right)
+                .orElse("");
     }
 
     private List<String> recentDealYmds(int months) {

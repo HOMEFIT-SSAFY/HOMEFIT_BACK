@@ -97,9 +97,27 @@ public class RtmsOpenApiClient {
         String day = firstText(element, "일", "dealDay");
         String dealDate = formatDealDate(firstText(year, dealYmd.substring(0, 4)), month, day, dealYmd);
         String dongName = normalize(firstText(element, "법정동", "umdNm", "dongName"));
-        String propertyName = normalize(firstText(element, "단지", "아파트", "연립다세대", "주택유형", "houseType"));
+        String propertyName = normalize(firstText(
+                element,
+                "단지명",
+                "단지",
+                "오피스텔명",
+                "offiNm",
+                "offiName",
+                "officetelName",
+                "오피스텔",
+                "건물명",
+                "건물명칭",
+                "주택명",
+                "연립다세대명",
+                "연립다세대",
+                "아파트",
+                "aptNm",
+                "houseNm",
+                "buildingName"
+        ));
         if (!OpenApiUri.hasText(propertyName)) {
-            propertyName = propertyType == PropertyType.ONEROOM ? "단독/다가구" : "오피스텔";
+            propertyName = fallbackPropertyName(propertyType, dongName, normalize(firstText(element, "지번", "jibun")));
         }
         String sourceId = String.join("|",
                 propertyType.name(),
@@ -192,6 +210,18 @@ public class RtmsOpenApiClient {
 
     private String normalize(String value) {
         return value == null ? "" : value.trim();
+    }
+
+    private String fallbackPropertyName(PropertyType propertyType, String dongName, String jibun) {
+        String typeLabel = propertyType == PropertyType.ONEROOM ? "원룸" : "오피스텔";
+        String location = String.join(" ", List.of(dongName, jibun).stream()
+                .filter(OpenApiUri::hasText)
+                .map(String::trim)
+                .toList());
+        if (OpenApiUri.hasText(location)) {
+            return location + " " + typeLabel;
+        }
+        return typeLabel;
     }
 
     private String value(String value) {

@@ -14,7 +14,7 @@ class AnalysisScoreServiceTest {
     private final AnalysisScoreService scoreService = new AnalysisScoreService();
 
     @Test
-    void rewardsCommercialTransitAndSafeTrafficWithBasePoints() {
+    void scoresOnlyCommercialAndTransitOutOfOneHundred() {
         CommercialSummary commercial = new CommercialSummary(42, 12, 10, 7, 8, 5);
         TrafficRiskSummary traffic = new TrafficRiskSummary(0, 0, "low");
         TransitSummary transit = new TransitSummary(1, 1, 3, 5, 9);
@@ -22,27 +22,30 @@ class AnalysisScoreServiceTest {
         AnalysisScore score = scoreService.calculate(commercial, traffic, transit);
 
         assertThat(score.total()).isEqualTo(100);
-        assertThat(score.commercialScore()).isEqualTo(25);
-        assertThat(score.transitScore()).isEqualTo(30);
-        assertThat(score.trafficSafetyScore()).isEqualTo(5);
+        assertThat(score.commercialScore()).isEqualTo(50);
+        assertThat(score.transitScore()).isEqualTo(50);
+        assertThat(score.trafficSafetyScore()).isZero();
+        assertThat(score.message()).contains("상권 50점", "대중교통 50점");
+        assertThat(score.message()).doesNotContain("기본");
     }
 
     @Test
-    void strongCommercialAndTransitAreaScoresAroundNinetyDespiteTrafficRisk() {
+    void trafficRiskCountDoesNotChangeScore() {
         CommercialSummary commercial = new CommercialSummary(20, 5, 5, 3, 2, 5);
         TrafficRiskSummary traffic = new TrafficRiskSummary(10, 10, "high");
         TransitSummary transit = new TransitSummary(1, 1, 0, 0, 0);
 
         AnalysisScore score = scoreService.calculate(commercial, traffic, transit);
 
-        assertThat(score.commercialScore()).isEqualTo(17);
-        assertThat(score.transitScore()).isEqualTo(28);
+        assertThat(score.commercialScore()).isEqualTo(33);
+        assertThat(score.transitScore()).isEqualTo(47);
         assertThat(score.trafficSafetyScore()).isZero();
-        assertThat(score.total()).isEqualTo(90);
+        assertThat(score.total()).isEqualTo(80);
+        assertThat(score.message()).contains("교통 이벤트 10건", "도로공사 10건");
     }
 
     @Test
-    void keepsBasePointsWhenNoInfrastructureExists() {
+    void returnsZeroWhenNoCommercialOrTransitInfrastructureExists() {
         CommercialSummary commercial = new CommercialSummary(0, 0, 0, 0, 0, 0);
         TrafficRiskSummary traffic = new TrafficRiskSummary(3, 0, "medium");
         TransitSummary transit = new TransitSummary(0, 0, 0, 0, 0);
@@ -52,6 +55,6 @@ class AnalysisScoreServiceTest {
         assertThat(score.commercialScore()).isZero();
         assertThat(score.transitScore()).isZero();
         assertThat(score.trafficSafetyScore()).isZero();
-        assertThat(score.total()).isEqualTo(45);
+        assertThat(score.total()).isZero();
     }
 }

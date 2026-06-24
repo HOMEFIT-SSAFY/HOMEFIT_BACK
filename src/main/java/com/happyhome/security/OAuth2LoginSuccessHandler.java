@@ -17,14 +17,17 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Component
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final MemberService memberService;
+    private final JwtProvider jwtProvider;
 
-    public OAuth2LoginSuccessHandler(MemberService memberService) {
+    public OAuth2LoginSuccessHandler(MemberService memberService, JwtProvider jwtProvider) {
         this.memberService = memberService;
+        this.jwtProvider = jwtProvider;
     }
 
     @Override
@@ -55,7 +58,17 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String redirect = (String) session.getAttribute(OAuthRedirectController.REDIRECT_SESSION_KEY);
         session.removeAttribute(OAuthRedirectController.REDIRECT_SESSION_KEY);
-        response.sendRedirect(redirect == null || redirect.isBlank() ? "/home" : redirect);
+        response.sendRedirect(withTokenParams(redirect == null || redirect.isBlank() ? "/home" : redirect, jwtProvider.createToken(member)));
+    }
+
+    private String withTokenParams(String redirect, JwtTokenResponse token) {
+        return UriComponentsBuilder.fromUriString(redirect)
+                .queryParam("oauth", "success")
+                .queryParam("grantType", token.grantType())
+                .queryParam("accessToken", token.accessToken())
+                .queryParam("refreshToken", token.refreshToken())
+                .build()
+                .toUriString();
     }
 
     private void saveSecurityContext(HttpSession session, MemberDto member) {

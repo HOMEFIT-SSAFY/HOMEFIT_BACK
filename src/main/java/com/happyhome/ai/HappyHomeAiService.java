@@ -219,7 +219,6 @@ public class HappyHomeAiService {
                 .append("level: ").append(value(analysis.score().level())).append("\n")
                 .append("commercialScore: ").append(analysis.score().commercialScore()).append("\n")
                 .append("transitScore: ").append(analysis.score().transitScore()).append("\n")
-                .append("trafficSafetyScore: ").append(analysis.score().trafficSafetyScore()).append("\n")
                 .append("commercialPlaces: ").append(analysis.commercialSummary().totalCount()).append("\n")
                 .append("food: ").append(analysis.commercialSummary().foodCount()).append("\n")
                 .append("cafes: ").append(analysis.commercialSummary().cafeCount()).append("\n")
@@ -227,7 +226,8 @@ public class HappyHomeAiService {
                 .append("convenience: ").append(analysis.commercialSummary().convenienceCount()).append("\n")
                 .append("busStopsWithin500m: ").append(analysis.transitSummary().busStopWithin500m()).append("\n")
                 .append("subwayWithin1000m: ").append(analysis.transitSummary().subwayWithin1000m()).append("\n")
-                .append("trafficEvents: ").append(analysis.trafficRiskSummary().eventCount()).append("\n");
+                .append("trafficEvents: ").append(analysis.trafficRiskSummary().eventCount()).append("\n")
+                .append("roadworks: ").append(analysis.trafficRiskSummary().roadworkCount()).append("\n");
     }
 
     private void appendSection(StringBuilder builder, String title) {
@@ -397,7 +397,8 @@ public class HappyHomeAiService {
                     .append(analysis.transitSummary().busStopWithin500m()).append("개, 지하철 1km 이내 ")
                     .append(analysis.transitSummary().subwayWithin1000m()).append("개, 교통 점수 ")
                     .append(analysis.score().transitScore()).append("점\n")
-                    .append("- 교통 이벤트: ").append(analysis.trafficRiskSummary().eventCount()).append("건\n\n");
+                    .append("- 교통 이슈: 이벤트 ").append(analysis.trafficRiskSummary().eventCount())
+                    .append("건, 도로공사 ").append(analysis.trafficRiskSummary().roadworkCount()).append("건\n\n");
         }
 
         if (!context.deals().isEmpty()) {
