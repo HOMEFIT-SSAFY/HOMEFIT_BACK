@@ -1,6 +1,8 @@
 package com.happyhome.rental.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,6 +49,33 @@ class RentalServiceTest {
 
         assertThat(result).containsExactly(notice);
         verify(lhClient, never()).notices(condition);
+    }
+
+    @Test
+    void refreshesConfiguredLhApiAndAddsApplicationDatesForCalendarRequests() {
+        RentalSearchCondition condition = new RentalSearchCondition("", "", "", 1, 100);
+        RentalNotice notice = new RentalNotice(
+                "LH-NEW", "Future application notice", "Seoul", "rental", "public", "open",
+                "2026.06.10", "2026.07.15", "https://apply.lh.or.kr",
+                "03", "06", "10", "063", "api"
+        );
+        RentalDetail detail = new RentalDetail(
+                "LH Seoul office", "Gangnam", "2026.06.26", "2026.06.30", "1600-1004"
+        );
+        when(lhClient.isConfigured()).thenReturn(true);
+        when(lhClient.apiNotices(eq(condition), anyString(), eq("2099.12.31"))).thenReturn(List.of(notice));
+        when(mapper.findByCondition(condition)).thenReturn(List.of(notice));
+        when(mapper.findDetailByNoticeId("LH-NEW")).thenReturn(Optional.empty());
+        when(lhClient.detail(notice)).thenReturn(detail);
+
+        List<RentalNotice> result = new RentalService(lhClient, mapper).notices(condition);
+
+        assertThat(result).singleElement().satisfies(item -> {
+            assertThat(item.noticeId()).isEqualTo("LH-NEW");
+            assertThat(item.applyStartDate()).isEqualTo("2026.06.26");
+            assertThat(item.applyEndDate()).isEqualTo("2026.06.30");
+        });
+        verify(mapper).upsert(notice);
     }
 
     @Test

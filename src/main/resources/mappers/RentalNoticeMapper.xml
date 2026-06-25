@@ -14,6 +14,8 @@
 			<arg column="status" javaType="string" />
 			<arg column="notice_date" javaType="string" />
 			<arg column="close_date" javaType="string" />
+			<arg column="apply_start_date" javaType="string" />
+			<arg column="apply_end_date" javaType="string" />
 			<arg column="detail_url" javaType="string" />
 			<arg column="ccr_cnnt_sys_ds_cd" javaType="string" />
 			<arg column="upp_ais_tp_cd" javaType="string" />
@@ -91,34 +93,49 @@
 	</insert>
 
 	<select id="findRecent" resultMap="noticeMap">
-		SELECT * FROM
-		rental_notice_cache ORDER BY cached_at DESC LIMIT 30
+		SELECT
+			r.*,
+			d.apply_start_date,
+			d.apply_end_date
+		FROM rental_notice_cache r
+		LEFT JOIN lh_notice_details d ON d.notice_id = r.notice_id
+		ORDER BY r.cached_at DESC LIMIT 30
 	</select>
 
 	<select id="findByCondition" resultMap="noticeMap">
-		SELECT * FROM rental_notice_cache
+		SELECT
+			r.*,
+			d.apply_start_date,
+			d.apply_end_date
+		FROM rental_notice_cache r
+		LEFT JOIN lh_notice_details d ON d.notice_id = r.notice_id
 		<where>
 			<if test="keyword != null and keyword != ''">
 				AND (
-					title LIKE CONCAT('%', #{keyword}, '%')
-					OR region_name LIKE CONCAT('%', #{keyword}, '%')
+					r.title LIKE CONCAT('%', #{keyword}, '%')
+					OR r.region_name LIKE CONCAT('%', #{keyword}, '%')
 				)
 			</if>
 			<if test="regionCode != null and regionCode != ''">
-				AND region_name LIKE CONCAT('%', #{regionCode}, '%')
+				AND r.region_name LIKE CONCAT('%', #{regionCode}, '%')
 			</if>
 			<if test="status != null and status != ''">
-				AND status = #{status}
+				AND r.status = #{status}
 			</if>
 		</where>
-		ORDER BY notice_date DESC, cached_at DESC, notice_id DESC
+		ORDER BY r.notice_date DESC, r.cached_at DESC, r.notice_id DESC
 		LIMIT #{size}
 		OFFSET #{offset}
 	</select>
 
 	<select id="findById" resultMap="noticeMap">
-		SELECT * FROM
-		rental_notice_cache WHERE notice_id = #{noticeId}
+		SELECT
+			r.*,
+			d.apply_start_date,
+			d.apply_end_date
+		FROM rental_notice_cache r
+		LEFT JOIN lh_notice_details d ON d.notice_id = r.notice_id
+		WHERE r.notice_id = #{noticeId}
 	</select>
 
 	<select id="findDetailByNoticeId" resultMap="detailMap">
@@ -154,7 +171,8 @@
 
 	<delete id="deleteApiNoticesBefore">
 		DELETE FROM rental_notice_cache
-		WHERE notice_date &lt; #{noticeDate}
+		WHERE source = 'api'
+		  AND close_date &lt; #{noticeDate}
 	</delete>
 
 </mapper>

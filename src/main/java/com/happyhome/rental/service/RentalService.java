@@ -14,6 +14,8 @@ import com.happyhome.rental.dto.RentalNotice;
 import com.happyhome.rental.dto.RentalNoticeDetail;
 import com.happyhome.rental.dto.RentalSearchCondition;
 import com.happyhome.rental.dto.RentalSupply;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +24,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RentalService {
+
+    private static final int CALENDAR_ENRICHMENT_SIZE = 50;
+    private static final int LH_NOTICE_LOOKBACK_DAYS = 90;
+    private static final DateTimeFormatter API_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     private final LhOpenApiClient lhClient;
     private final RentalNoticeMapper mapper;
@@ -50,14 +56,16 @@ public class RentalService {
     }
 
     public List<RentalNotice> notices(RentalSearchCondition condition) {
+        refreshLhCacheQuietly(condition);
+
         List<RentalNotice> cachedNotices = mapper.findByCondition(condition);
         if (!cachedNotices.isEmpty()) {
-            return cachedNotices;
+            return enrichCalendarDatesIfNeeded(condition, cachedNotices);
         }
 
         List<RentalNotice> notices = lhClient.notices(condition);
         notices.forEach(this::cacheQuietly);
-        return notices;
+        return enrichCalendarDatesIfNeeded(condition, notices);
     }
 
     public RentalNoticeDetail detail(String noticeId) {
@@ -136,6 +144,53 @@ public class RentalService {
                         coordinate.longitude()
                 ))
                 .orElse(supply);
+    }
+
+    private void refreshLhCacheQuietly(RentalSearchCondition condition) {
+        if (!lhClient.isConfigured()) {
+            return;
+        }
+        try {
+            String noticeStartDate = LocalDate.now().minusDays(LH_NOTICE_LOOKBACK_DAYS).format(API_DATE_FORMAT);
+            List<RentalNotice> notices = lhClient.apiNotices(condition, noticeStartDate, "2099.12.31");
+            notices.forEach(this::cacheQuietly);
+        } catch (Exception ignored) {
+            // Cached data is still usable when the live LH list refresh is unavailable.
+        }
+    }
+
+    private List<RentalNotice> enrichCalendarDatesIfNeeded(RentalSearchCondition condition, List<RentalNotice> notices) {
+        if (condition.size() < CALENDAR_ENRICHMENT_SIZE || notices.isEmpty() || !lhClient.isConfigured()) {
+            return notices;
+        }
+        return notices.stream()
+                .map(this::noticeWithApplicationDates)
+                .toList();
+    }
+
+    private RentalNotice noticeWithApplicationDates(RentalNotice notice) {
+        if (OpenApiUri.hasText(notice.applyStartDate()) || OpenApiUri.hasText(notice.applyEndDate())) {
+            return notice;
+        }
+        RentalDetail detail = detailFor(notice);
+        return new RentalNotice(
+                notice.noticeId(),
+                notice.title(),
+                notice.regionName(),
+                notice.noticeType(),
+                notice.detailType(),
+                notice.status(),
+                notice.noticeDate(),
+                notice.closeDate(),
+                detail.applyStartDate(),
+                detail.applyEndDate(),
+                notice.detailUrl(),
+                notice.ccrCnntSysDsCd(),
+                notice.uppAisTpCd(),
+                notice.aisTpCd(),
+                notice.splInfTpCd(),
+                notice.source()
+        );
     }
 
     private Optional<GeoCoordinate> coordinateFor(RentalSupply supply) {

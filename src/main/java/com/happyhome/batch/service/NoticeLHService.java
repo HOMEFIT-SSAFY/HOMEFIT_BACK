@@ -28,6 +28,7 @@ public class NoticeLHService {
     private static final String JOB_NAME = "LH_NOTICE_SYNC";
     private static final String API_NAME = "LH_OPEN_API";
     private static final int PAGE_SIZE = 100;
+    private static final int NOTICE_LOOKBACK_DAYS = 90;
     private static final DateTimeFormatter API_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     private final LhOpenApiClient lhOpenApiClient;
@@ -45,8 +46,9 @@ public class NoticeLHService {
             if (!lhOpenApiClient.isConfigured()) {
                 errors.add("OPENAPI_DATA_SERVICE_KEY is not configured.");
             } else {
-                String noticeStartDate = LocalDate.now().minusDays(1).format(API_DATE_FORMAT);
-                rentalNoticeMapper.deleteApiNoticesBefore(noticeStartDate);
+                LocalDate today = LocalDate.now();
+                String noticeStartDate = today.minusDays(NOTICE_LOOKBACK_DAYS).format(API_DATE_FORMAT);
+                rentalNoticeMapper.deleteApiNoticesBefore(today.format(API_DATE_FORMAT));
 
                 int page = 1;
                 while (true) {
@@ -60,7 +62,7 @@ public class NoticeLHService {
 
                     List<RentalNotice> notices = lhOpenApiClient.apiNotices(condition, noticeStartDate, "2099.12.31")
                             .stream()
-                            .filter(notice -> isOnOrAfter(notice.noticeDate(), noticeStartDate))
+                            .filter(notice -> isRelevantForCalendar(notice, noticeStartDate, today.format(API_DATE_FORMAT)))
                             .toList();
                     if (notices.isEmpty()) {
                         break;
@@ -155,7 +157,12 @@ public class NoticeLHService {
         }
     }
 
-    private boolean isOnOrAfter(String noticeDate, String cutoffDate) {
-        return noticeDate != null && noticeDate.compareTo(cutoffDate) >= 0;
+    private boolean isRelevantForCalendar(RentalNotice notice, String noticeStartDate, String today) {
+        return isOnOrAfter(notice.noticeDate(), noticeStartDate)
+                || isOnOrAfter(notice.closeDate(), today);
+    }
+
+    private boolean isOnOrAfter(String date, String cutoffDate) {
+        return date != null && date.compareTo(cutoffDate) >= 0;
     }
 }
